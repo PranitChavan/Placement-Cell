@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800|Poppins&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.cards {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 30px;
+}
+.cards h1 {
+  font-size: 40px;
+  margin: 0 0 30px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.services {
+  display: flex;
+  align-items: center;
+}
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  margin: 20px;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.content .button-3 {
+  margin-top: 10px;
+}
+.content .fab {
+  font-size: 70px;
+  margin: 16px 0;
+}
+.content > * {
+  flex: 1 1 100%;
+}
+.content:hover {
+  color: white;
+}
+
+.content-1:hover {
+  border-color: #4267b2;
+  background: #4267b2;
+}
+
+.content h2 {
+  font-size: 30px;
+  margin: 16px 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.content p {
+  font-size: 17px;
+  font-family: 'Poppins', sans-serif;
+}
+.content a {
+  text-decoration: none;
+  color: white;
+}
+
+@media (max-width: 900px) {
+  .services {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.readMore {
+  margin-top: -100px;
+}
+
+.iconn {
+  margin-top: -5px;
+  font-size: 25px;
+}
+
+.cardshadow {
+  box-shadow: -1px -1px 24px 16px rgba(0, 0, 0, 0.75);
+}

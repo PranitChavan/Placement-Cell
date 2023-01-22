@@ -5,12 +5,15 @@
 }
 
 body {
-  background-image: url('../src/images/background.png');
+  background-image: url('../src/Assets/background.webp');
   background-repeat: no-repeat;
-
   background-size: cover;
 }
 
 .navbar {
   height: 80px;
+}
+
+p {
+  margin-bottom: 0 !important;
 }

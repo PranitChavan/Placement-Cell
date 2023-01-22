@@ -1,5 +1,5 @@
 import React from 'react';
-import img from '../images/Screenshot 2022-11-05 102013.png';
+import img from '../../Assets/sliderImg.webp';
 
 export default function Slides() {
   return (

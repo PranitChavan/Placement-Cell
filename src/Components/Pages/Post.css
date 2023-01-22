@@ -84,3 +84,9 @@
 .cardshadow {
   box-shadow: -1px -1px 24px 16px rgba(0, 0, 0, 0.75);
 }
+
+.time-icon {
+  font-size: 20px;
+  margin-top: 4px;
+  margin-right: 5px;
+}

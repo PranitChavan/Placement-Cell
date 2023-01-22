@@ -1,40 +1,42 @@
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { useAuth } from '../contexts/AuthContext';
-import { db } from '../Config/firebaseCfg';
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { useAuth } from '../../Context/AuthContext';
+
+import { supabase } from '../../Config/supabase.client';
 
 function FormModal(props) {
   const { getPostDetail, onHide } = props;
   const [formData, setFormData] = useState();
   const { currentUser } = useAuth();
 
-  const washingtonRef = doc(db, 'Teachers', currentUser.uid);
-
   const inputHandler = function (e) {
     const id = e.target.id;
     const value = e.target.value;
 
     setFormData((prevData) => {
-      return { ...prevData, [id]: value, teacherId: currentUser.uid, id: Date.now() };
+      return { ...prevData, [id]: value, teacherId: currentUser.uid, post_id: Date.now().toString() };
     });
   };
 
-  const submitHandler = function (e) {
+  const submitHandler = async function (e) {
     e.preventDefault();
-    saveJobPostingDetails();
+    await createPostRecord();
     getPostDetail([formData]);
     onHide();
   };
 
-  async function saveJobPostingDetails() {
-    try {
-      await updateDoc(washingtonRef, {
-        posts: arrayUnion(formData),
-      });
-    } catch (err) {
-      console.log(err);
-    }
+  async function createPostRecord() {
+    let { description, company_name, job_title, location, skills_required, post_id: id } = formData;
+
+    const { data, error } = await supabase.from('Job_Posts').insert({
+      post_id: id,
+      teacher_id: currentUser.uid,
+      description,
+      company_name,
+      job_title,
+      location,
+      skills_required,
+    });
   }
 
   return (
@@ -45,19 +47,19 @@ function FormModal(props) {
       <Modal.Body>
         <form onSubmit={submitHandler}>
           <div className="mb-3">
-            <label htmlFor="jobTitle" className="form-label">
+            <label htmlFor="job_title" className="form-label">
               Job Title
             </label>
-            <input type="text" className="form-control" id="jobTitle" required onChange={inputHandler} />
+            <input type="text" className="form-control" id="job_title" required onChange={inputHandler} />
           </div>
           <div className="mb-3">
-            <label htmlFor="companyName" className="form-label">
+            <label htmlFor="company_name" className="form-label">
               Company Name
             </label>
             <input
               type="text"
               className="form-control"
-              id="companyName"
+              id="company_name"
               aria-describedby="emailHelp"
               required
               onChange={inputHandler}
@@ -70,13 +72,13 @@ function FormModal(props) {
             <input type="text" className="form-control" id="location" required onChange={inputHandler} />
           </div>
           <div className="mb-3">
-            <label htmlFor="skillsRequired" className="form-label">
+            <label htmlFor="skills_required" className="form-label">
               Skills Required
             </label>
             <input
               type="text"
               className="form-control"
-              id="skillsRequired"
+              id="skills_required"
               placeholder="Seperate each skill by a comma. Eg. HTML, CSS, Linux Automation"
               required
               onChange={inputHandler}
@@ -84,10 +86,10 @@ function FormModal(props) {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="jobDescription" className="form-label">
+            <label htmlFor="description" className="form-label">
               Job description
             </label>
-            <textarea className="form-control" id="jobDescription" rows="3" required onChange={inputHandler}></textarea>
+            <textarea className="form-control" id="description" rows="3" required onChange={inputHandler}></textarea>
           </div>
           <button type="submit" className="btn btn-primary">
             Submit

@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import '../Components/StudentsForm.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../Config/supabase.client';
+import '../Pages/StudentsForm.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function StudentForm() {
-  const { currentUser, saveStudentsFormData, uploadResume } = useAuth();
+export default function StudentDetails() {
+  const { currentUser } = useAuth();
   const [resumeFile, setResumeFile] = useState();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({});
@@ -16,7 +17,7 @@ export default function StudentForm() {
     const value = e.target.value;
 
     setFormData((prevData) => {
-      return { ...prevData, [id]: value };
+      return { ...prevData, [id]: value, email: currentUser.email, name: currentUser.displayName };
     });
   };
 
@@ -24,13 +25,42 @@ export default function StudentForm() {
     e.preventDefault();
     try {
       setLoading(true);
-      await saveStudentsFormData(formData);
-      await uploadResume(resumeFile);
+      await uploadResume();
+      await createStudentFormRecord();
     } catch (err) {
       alert(err);
     }
     setLoading(false);
     navigate(-1);
+  };
+
+  async function createStudentFormRecord() {
+    const { name, email, qualifications, contact: phone, passingYear: passing_year, skills } = formData;
+
+    const { data: resume_url, error1 } = supabase.storage.from('resumes').getPublicUrl(`public/${currentUser.displayName}`);
+
+    const { data, error } = await supabase.from('Student_Details').upsert({
+      student_id: currentUser.uid,
+      name,
+      email,
+      qualifications,
+      phone,
+      passing_year,
+      skills,
+      resume_url: resume_url.publicUrl,
+    });
+
+    if (error) alert('Details not updated! Please try again');
+
+    alert('Your details are saved!');
+  }
+
+  const uploadResume = async () => {
+    const { data, error } = supabase.storage.from('resumes').upload(`public/${currentUser.displayName}`, resumeFile, {
+      upsert: true,
+    });
+
+    if (error) alert('Resume not uploaded. Please try again!');
   };
 
   return (
@@ -39,7 +69,6 @@ export default function StudentForm() {
         <form onSubmit={submitHandler}>
           <div className="row">
             <div className="col-md-3 register-left">
-              <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
               <h3>Welcome</h3>
               <p>Please fill the correct details, as this details will be forwarded to the companies you applied for.</p>
               <br />
@@ -56,7 +85,7 @@ export default function StudentForm() {
                           id="name"
                           className="form-control mb-2"
                           placeholder="Full Name *"
-                          value={currentUser.displayName}
+                          defaultValue={currentUser.displayName}
                           onChange={inputHandler}
                         />
                       </div>
@@ -95,7 +124,7 @@ export default function StudentForm() {
                           className="form-control  mb-2"
                           placeholder="Your Email *"
                           id="email"
-                          value={currentUser.email}
+                          defaultValue={currentUser.email}
                           onChange={inputHandler}
                         />
                       </div>

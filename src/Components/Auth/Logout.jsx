@@ -1,8 +1,17 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { app } from '../../Config/firebaseCfg';
+import { getAuth, signOut } from 'firebase/auth';
+
+const auth = getAuth(app);
 
 export default function Logout() {
-  const { logoutHandler } = useAuth();
+  async function logoutHandler() {
+    try {
+      return await signOut(auth);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <form className="d-flex logout-form">

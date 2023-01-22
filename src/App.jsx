@@ -1,10 +1,12 @@
 import './App.css';
-import Landing from './Components/Landing';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import StudentForm from './Components/StudentForm';
-import { useAuth } from './contexts/AuthContext';
-import Dashboard from './Components/Dashboard';
+import { AuthProvider } from './Context/AuthContext';
+import Landing from './Components/Pages/Landing';
+import StudentDetails from './Components/Pages/StudentDetails';
+import { useAuth } from './Context/AuthContext';
+import Dashboard from './Components/Pages/Dashboard';
+import Navbar from './Components/Pages/Navbar';
+import Applicants from './Components/Pages/Applicants';
 
 function App() {
   const { currentUser } = useAuth();
@@ -24,6 +26,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <Navbar loggedInOrNot={currentUser} />
         <Routes>
           <Route
             exact
@@ -43,10 +46,10 @@ function App() {
             }
           ></Route>
           <Route
-            path="/StudentForm"
+            path="/StudentDetails"
             element={
               <RequiredAuth>
-                <StudentForm />
+                <StudentDetails />
               </RequiredAuth>
             }
           ></Route>
@@ -55,6 +58,14 @@ function App() {
             element={
               <RequiredAuth>
                 <Dashboard />
+              </RequiredAuth>
+            }
+          ></Route>
+          <Route
+            path="/Applicants"
+            element={
+              <RequiredAuth>
+                <Applicants />
               </RequiredAuth>
             }
           ></Route>

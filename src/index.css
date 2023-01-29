@@ -5,9 +5,11 @@
 }
 
 body {
-  background-image: url('../src/Assets/background.webp');
+  /* background-image: url('../src/Assets/back.png'); */
   background-repeat: no-repeat;
   background-size: cover;
+  height: 100vh;
+  background-color: #1a2027 !important;
 }
 
 .navbar {

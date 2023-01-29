@@ -7,9 +7,17 @@ import { useAuth } from './Context/AuthContext';
 import Dashboard from './Components/Pages/Dashboard';
 import Navbar from './Components/Pages/Navbar';
 import Applicants from './Components/Pages/Applicants';
+import { ConfirmProvider } from 'material-ui-confirm';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 function App() {
   const { currentUser } = useAuth();
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
   const RequiredAuth = ({ children, operation }) => {
     if (currentUser && operation === 'Landing') {
@@ -25,52 +33,58 @@ function App() {
 
   return (
     <AuthProvider>
-      <Router>
-        <Navbar loggedInOrNot={currentUser} />
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <RequiredAuth operation={'Landing'}>
-                <Landing />
-              </RequiredAuth>
-            }
-          ></Route>
-          <Route
-            path="/Landing"
-            element={
-              <RequiredAuth operation={'Landing'}>
-                <Landing />
-              </RequiredAuth>
-            }
-          ></Route>
-          <Route
-            path="/StudentDetails"
-            element={
-              <RequiredAuth>
-                <StudentDetails />
-              </RequiredAuth>
-            }
-          ></Route>
-          <Route
-            path="/Dashboard"
-            element={
-              <RequiredAuth>
-                <Dashboard />
-              </RequiredAuth>
-            }
-          ></Route>
-          <Route
-            path="/Applicants"
-            element={
-              <RequiredAuth>
-                <Applicants />
-              </RequiredAuth>
-            }
-          ></Route>
-        </Routes>
-      </Router>
+      <ThemeProvider theme={darkTheme}>
+        <Router>
+          <Navbar loggedInOrNot={currentUser} />
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                <RequiredAuth operation={'Landing'}>
+                  <Landing />
+                </RequiredAuth>
+              }
+            ></Route>
+            <Route
+              path="/Landing"
+              element={
+                <RequiredAuth operation={'Landing'}>
+                  <Landing />
+                </RequiredAuth>
+              }
+            ></Route>
+            <Route
+              path="/StudentDetails"
+              element={
+                <RequiredAuth>
+                  <StudentDetails />
+                </RequiredAuth>
+              }
+            ></Route>
+            <Route
+              path="/Dashboard"
+              element={
+                <RequiredAuth>
+                  <ConfirmProvider>
+                    <Dashboard />
+                  </ConfirmProvider>
+                </RequiredAuth>
+              }
+            ></Route>
+            <Route
+              path="/Applicants"
+              element={
+                <RequiredAuth>
+                  <ConfirmProvider>
+                    <Applicants />
+                  </ConfirmProvider>
+                </RequiredAuth>
+              }
+            ></Route>
+          </Routes>
+        </Router>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

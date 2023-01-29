@@ -1,8 +1,8 @@
-import { React, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useAccountType } from '../../Hooks/useAccountType';
-import Post from './Post';
+import Post from '../UI/Post/Post';
 import FormModal from '../Form/FormModal';
 import Button from '../UI/Button';
 import './Dashboard.css';
@@ -53,7 +53,7 @@ export default function Dashboard() {
           )}
         </header>
 
-        <Post loggedInUser={currentUser} post={jobPost} />
+        <Post post={jobPost} />
         <FormModal show={modalShow} getPostDetail={setJobPost} onHide={() => setModalShow(false)} />
       </div>
     </>

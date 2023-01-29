@@ -1,6 +1,9 @@
 import { supabase } from '../Config/supabase.client';
 import { hasStudentFilledTheForm } from './misc';
 
+// TODOS
+// If job post is deleted then student should not be able to apply
+
 export async function applyHandler(postId, currentUser) {
   const formFilled = await hasStudentFilledTheForm(currentUser);
 

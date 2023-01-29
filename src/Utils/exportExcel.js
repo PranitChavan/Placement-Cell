@@ -1,5 +1,3 @@
-import { utils, writeFileXLSX } from 'xlsx';
-
 export function exportExcel(data, companyName) {
   const formattedData = [];
   if (data?.length === 0) {
@@ -10,8 +8,11 @@ export function exportExcel(data, companyName) {
     formattedData.push({ name, email, passing_year, phone, qualifications, skills, resume_url });
   });
   if (!formattedData.length) return;
-  let wb = utils.book_new();
-  let ws = utils.json_to_sheet(formattedData);
-  utils.book_append_sheet(wb, ws, 'mySheet');
-  writeFileXLSX(wb, `${companyName}Applicants.xlsx`);
+
+  import('xlsx').then(({ utils, writeFileXLSX }) => {
+    let wb = utils.book_new();
+    let ws = utils.json_to_sheet(formattedData);
+    utils.book_append_sheet(wb, ws, 'mySheet');
+    writeFileXLSX(wb, `${companyName}Applicants.xlsx`);
+  });
 }

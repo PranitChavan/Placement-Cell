@@ -7,13 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import { useConfirm } from 'material-ui-confirm';
 import { applyHandler } from '../../Utils/applyHandler';
 import { useAuth } from '../../Context/AuthContext';
+import { confirmDeletionDialog } from '../../Utils/helpers';
+import { deleteApplicant } from '../../Utils/helpers';
 
 const teacherOptions = ['View Applicants', 'Delete'];
 const studentOptions = ['Apply', 'Delete My Application'];
 
 const ITEM_HEIGHT = 48;
 
-export default function MenuItems({ deletePost, postId, type }) {
+export default function MenuItems({ deletePost, postId, type, hasStudentApplied, setUpdateUI }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser } = useAuth();
 
@@ -22,12 +24,20 @@ export default function MenuItems({ deletePost, postId, type }) {
 
   const confirm = useConfirm();
 
-  const confirmDeletion = () => {
-    confirm({ description: 'Are you sure that you would like to delete this job post?', title: 'Delete Job Post' })
-      .then(() => {
-        deletePost(postId);
-      })
-      .catch(() => {});
+  const propsForPostDeletion = {
+    confirm,
+    operation: deletePost,
+    operationArg: [postId],
+    description: 'Are you sure that you would like to delete this job post?',
+    title: 'Delete Job Post',
+  };
+
+  const propsForApplicantDeletion = {
+    confirm,
+    operation: deleteApplicant,
+    operationArg: [currentUser.uid, postId],
+    title: 'Delete application',
+    description: 'Are you sure that you would like to delete your application? You can always apply again.',
   };
 
   const handleClick = (event) => {
@@ -37,20 +47,34 @@ export default function MenuItems({ deletePost, postId, type }) {
   const handleClose = (e) => {
     switch (e.target.innerText) {
       case 'Delete':
-        confirmDeletion();
+        confirmDeletionDialog(propsForPostDeletion);
         break;
       case 'View Applicants':
-        navigate('/Applicants', { state: { postId } });
+        navigate(`/Applicants/${postId}`, { state: { postId } });
         break;
       case 'Apply':
         applyHandler(postId, currentUser);
+        setUpdateUI(postId);
+        break;
+      case 'Delete My Application':
+        confirmDeletionDialog(propsForApplicantDeletion);
+        setUpdateUI(postId);
       default:
         setAnchorEl(null);
     }
+
+    setAnchorEl(null);
   };
 
   const decideItems = () => {
     return type === 'Teacher' ? teacherOptions : studentOptions;
+  };
+
+  const disableMenuItems = (option) => {
+    if (option === 'Apply' && hasStudentApplied) return true;
+    if (option === 'Delete My Application' && !hasStudentApplied) return true;
+
+    return false;
   };
 
   return (
@@ -82,7 +106,7 @@ export default function MenuItems({ deletePost, postId, type }) {
         }}
       >
         {decideItems().map((option) => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+          <MenuItem key={option} onClick={handleClose} disabled={disableMenuItems(option)}>
             {option}
           </MenuItem>
         ))}

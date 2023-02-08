@@ -1,5 +1,5 @@
 import { supabase } from '../Config/supabase.client';
-import { hasStudentFilledTheForm } from './misc';
+import { hasStudentFilledTheForm } from './helpers';
 
 // TODOS
 // If job post is deleted then student should not be able to apply
@@ -20,7 +20,7 @@ export async function applyHandler(postId, currentUser) {
   const { data: alreadyApplied, error: alreadyAppliedErr } = await supabase
     .from('Student_Applications')
     .select('student_id')
-    .match({ student_id: currentUser.uid, post_id: postId, status: 'Active' });
+    .match({ student_id: currentUser.uid, post_id: postId });
 
   if (alreadyAppliedErr) {
     alert('Failed! Please try again!');

@@ -6,7 +6,7 @@ import Post from '../UI/Post/Post';
 import FormModal from '../Form/FormModal';
 import Button from '../UI/Button';
 import './Dashboard.css';
-import { hasStudentFilledTheForm } from '../../Utils/misc';
+import { hasStudentFilledTheForm } from '../../Utils/helpers';
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
@@ -46,7 +46,7 @@ export default function Dashboard() {
         </section>
 
         <header>
-          {accountType === 'Teacher' ? (
+          {accountType && accountType === 'Teacher' ? (
             <Button onClick={() => setModalShow(true)}>Create Post</Button>
           ) : (
             <Button onClick={updateFormHandler}>{isFormFilled ? 'Update Form' : 'Fill Form'}</Button>

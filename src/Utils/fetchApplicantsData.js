@@ -5,6 +5,9 @@ export async function fetchApplicantsData(jobid) {
     jobid,
   });
 
-  if (error) return [];
+  if (error) {
+    alert('Something went wrong. Please try again!');
+    return [];
+  }
   return data;
 }

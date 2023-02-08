@@ -9,6 +9,9 @@ import Navbar from './Components/Pages/Navbar';
 import Applicants from './Components/Pages/Applicants';
 import { ConfirmProvider } from 'material-ui-confirm';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   const { currentUser } = useAuth();
@@ -34,56 +37,58 @@ function App() {
   return (
     <AuthProvider>
       <ThemeProvider theme={darkTheme}>
-        <Router>
-          <Navbar loggedInOrNot={currentUser} />
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={
-                <RequiredAuth operation={'Landing'}>
-                  <Landing />
-                </RequiredAuth>
-              }
-            ></Route>
-            <Route
-              path="/Landing"
-              element={
-                <RequiredAuth operation={'Landing'}>
-                  <Landing />
-                </RequiredAuth>
-              }
-            ></Route>
-            <Route
-              path="/StudentDetails"
-              element={
-                <RequiredAuth>
-                  <StudentDetails />
-                </RequiredAuth>
-              }
-            ></Route>
-            <Route
-              path="/Dashboard"
-              element={
-                <RequiredAuth>
-                  <ConfirmProvider>
-                    <Dashboard />
-                  </ConfirmProvider>
-                </RequiredAuth>
-              }
-            ></Route>
-            <Route
-              path="/Applicants"
-              element={
-                <RequiredAuth>
-                  <ConfirmProvider>
-                    <Applicants />
-                  </ConfirmProvider>
-                </RequiredAuth>
-              }
-            ></Route>
-          </Routes>
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <Navbar loggedInOrNot={currentUser} />
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={
+                  <RequiredAuth operation={'Landing'}>
+                    <Landing />
+                  </RequiredAuth>
+                }
+              ></Route>
+              <Route
+                path="/Landing"
+                element={
+                  <RequiredAuth operation={'Landing'}>
+                    <Landing />
+                  </RequiredAuth>
+                }
+              ></Route>
+              <Route
+                path="/StudentDetails"
+                element={
+                  <RequiredAuth>
+                    <StudentDetails />
+                  </RequiredAuth>
+                }
+              ></Route>
+              <Route
+                path="/Dashboard"
+                element={
+                  <RequiredAuth>
+                    <ConfirmProvider>
+                      <Dashboard />
+                    </ConfirmProvider>
+                  </RequiredAuth>
+                }
+              ></Route>
+              <Route
+                path="/Applicants/:postId"
+                element={
+                  <RequiredAuth>
+                    <ConfirmProvider>
+                      <Applicants />
+                    </ConfirmProvider>
+                  </RequiredAuth>
+                }
+              ></Route>
+            </Routes>
+          </Router>
+        </QueryClientProvider>
       </ThemeProvider>
     </AuthProvider>
   );

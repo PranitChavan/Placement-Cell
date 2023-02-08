@@ -17,7 +17,7 @@ export default function StudentDetails() {
     const value = e.target.value;
 
     setFormData((prevData) => {
-      return { ...prevData, [id]: value, email: currentUser.email, name: currentUser.displayName };
+      return { ...prevData, [id]: value, email: currentUser.email };
     });
   };
 

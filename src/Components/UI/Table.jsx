@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,24 +7,31 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
-import Button from './Button';
+import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-import { useConfirm } from 'material-ui-confirm';
-import { confirmDeletionDialog, deleteApplicant } from '../../Utils/helpers';
+import { deleteApplicant } from '../../Utils/helpers';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Confirmation from './ConfirmationDialog';
+import { useAuth } from '../../Context/AuthContext';
 
 export default function ApplicantsTable(props) {
-  const { data, postId, updateTable } = props;
+  const { data, postId } = props;
+  const queryClient = useQueryClient();
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' });
+  const { currentUser } = useAuth();
 
-  const confirm = useConfirm();
+  const { mutate: deleteJobApplication } = useMutation({
+    mutationFn: ([studentId, postId]) => {
+      return deleteApplicant([studentId, postId, setConfirmDialog]);
+    },
 
-  const propsForApplicantDeletion = {
-    confirm,
-    operation: deleteApplicant,
-    title: 'Delete application',
-    description: 'Are you sure that you would like to delete this application?',
-    afterOperation: updateTable,
-  };
+    onSuccess: (_, [studentId, postId]) => {
+      queryClient.setQueryData(['applicants'], (oldData) => {
+        return oldData.filter((post) => post.student_id !== studentId);
+      });
+    },
+  });
 
   return (
     <Container>
@@ -41,10 +48,9 @@ export default function ApplicantsTable(props) {
           <TableBody>
             {data.length === 0 && (
               <TableRow>
-                {' '}
                 <TableCell colSpan={6} style={{ textAlign: 'center' }}>
                   No Students have applied yet!
-                </TableCell>{' '}
+                </TableCell>
               </TableRow>
             )}
 
@@ -55,7 +61,7 @@ export default function ApplicantsTable(props) {
                     <Avatar
                       alt="Remy Sharp"
                       src={row.profile_picture}
-                      referrerPolicy="no-referrer"
+                      referrerPolicy="noopener noreferrer"
                       style={{ marginRight: '10px' }}
                     >
                       {row.name?.split('')[0]}
@@ -72,14 +78,21 @@ export default function ApplicantsTable(props) {
                 <TableCell align="center">
                   {' '}
                   <Button
-                    className={'btn btn-success'}
-                    onClick={() =>
-                      confirmDeletionDialog({
-                        ...propsForApplicantDeletion,
-                        operationArg: [row.student_id, postId],
-                        afterOperationArgs: [row.student_id],
-                      })
-                    }
+                    color="error"
+                    variant="contained"
+                    style={{ fontWeight: '5' }}
+                    onClick={() => {
+                      setConfirmDialog({
+                        isOpen: true,
+                        title: 'Delete Student Application',
+                        subTitle: `Are you sure that you would like to delete ${
+                          currentUser.displayName.split(' ')[0]
+                        }'s application ? They will need to apply again.`,
+                        onConfirm: () => {
+                          deleteJobApplication([row.student_id, postId]);
+                        },
+                      });
+                    }}
                   >
                     Delete
                   </Button>
@@ -89,6 +102,7 @@ export default function ApplicantsTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
+      <Confirmation confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
     </Container>
   );
 }

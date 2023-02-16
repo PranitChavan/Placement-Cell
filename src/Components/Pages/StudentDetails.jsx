@@ -3,7 +3,6 @@ import { useAuth } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../Config/supabase.client';
 import '../Pages/StudentsForm.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function StudentDetails() {
   const { currentUser } = useAuth();

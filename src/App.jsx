@@ -1,15 +1,17 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './Context/AuthContext';
-import Landing from './Components/Pages/Landing';
-import StudentDetails from './Components/Pages/StudentDetails';
 import { useAuth } from './Context/AuthContext';
 import Dashboard from './Components/Pages/Dashboard';
 import Navbar from './Components/Pages/Navbar';
-import Applicants from './Components/Pages/Applicants';
-import { ConfirmProvider } from 'material-ui-confirm';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { lazy, Suspense } from 'react';
+import Landing from './Components/Pages/Landing';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const StudentDetails = lazy(() => import('./Components/Pages/StudentDetails'));
+const Applicants = lazy(() => import('./Components/Pages/Applicants'));
 
 const queryClient = new QueryClient();
 
@@ -70,9 +72,9 @@ function App() {
                 path="/Dashboard"
                 element={
                   <RequiredAuth>
-                    <ConfirmProvider>
+                    <Suspense>
                       <Dashboard />
-                    </ConfirmProvider>
+                    </Suspense>
                   </RequiredAuth>
                 }
               ></Route>
@@ -80,9 +82,9 @@ function App() {
                 path="/Applicants/:postId"
                 element={
                   <RequiredAuth>
-                    <ConfirmProvider>
+                    <Suspense>
                       <Applicants />
-                    </ConfirmProvider>
+                    </Suspense>
                   </RequiredAuth>
                 }
               ></Route>

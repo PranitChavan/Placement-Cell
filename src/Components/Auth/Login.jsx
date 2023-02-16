@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../Config/supabase.client';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';

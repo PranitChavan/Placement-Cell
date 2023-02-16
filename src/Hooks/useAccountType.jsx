@@ -1,19 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../Context/AuthContext';
-
 // THIS HOOK RETURNS TYPE OF THE CURRENT ACCOUNT : TEACHER/ STUDENT
+import { useAuth } from '../Context/AuthContext';
+import { useQuery } from '@tanstack/react-query';
 
 export function useAccountType(currentUser) {
-  const [accountType, setAccountType] = useState(null);
-  const { accountType: accountTypeFunc } = useAuth();
+  const { accountType: getAccountType } = useAuth();
 
-  useEffect(() => {
-    async function fetchData() {
-      const type = await accountTypeFunc(currentUser);
-      setAccountType(type);
-    }
-    fetchData();
-  }, [accountTypeFunc, currentUser]);
+  const { data: accountType, isLoading } = useQuery({
+    queryKey: ['accountType'],
+    queryFn: () => getAccountType(currentUser),
+    refetchOnWindowFocus: false,
+  });
 
-  return accountType;
+  return [accountType, isLoading];
 }

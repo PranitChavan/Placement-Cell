@@ -1,4 +1,3 @@
-import React from 'react';
 import img from '../../Assets/sliderImg.webp';
 
 export default function Slides() {

@@ -3,7 +3,7 @@ import { supabase } from '../Config/supabase.client';
 export async function hasStudentFilledTheForm(currentUser) {
   const { data, error } = await supabase.from('Student_Details').select('name').eq('student_id', currentUser.uid);
 
-  if (error) return 'ERROR';
+  if (error) throw new Error('Error!');
   if (!data.length) return 'NOT_FILLED';
   if (data.length) return 'FILLED';
 }
@@ -42,25 +42,24 @@ export const checkIfStudentHasAlreadyApplied = async (postsData, currentUser) =>
 };
 
 export const confirmDeletionDialog = (args) => {
-  const { confirm, operation, operationArg, description, title, afterOperation, afterOperationArgs } = args;
+  const { confirm, operation, operationArg, description, title } = args;
 
   const [arg1, arg2] = operationArg;
 
   confirm({ description, title })
     .then(() => {
-      operation(arg1, arg2);
-
-      if (afterOperation && afterOperationArgs) {
-        const [afterArg1] = afterOperationArgs;
-        afterOperation(afterArg1);
-      }
+      operation({ arg1, arg2 });
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-export async function deleteApplicant(studentId, postId) {
+export async function deleteApplicant([studentId, postId, setConfirmDialog]) {
+  setConfirmDialog({
+    isOpen: false,
+  });
+
   const { data, error } = await supabase
     .from('Student_Applications')
     .delete()

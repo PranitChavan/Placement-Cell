@@ -1,11 +1,15 @@
-import './Button.css';
+import Button from '@mui/material/Button';
 
-function Button({ children, onClick, className, disabled }) {
+export default function StandardButton({ operation, children, color, disabled, style }) {
   return (
-    <button role="button" onClick={onClick} className={className ? className : 'button-3'} disabled={disabled}>
+    <Button
+      variant="contained"
+      disabled={disabled}
+      onClick={operation}
+      color="error"
+      style={{ background: !color ? '#2ea44f' : '', ...style }}
+    >
       {children}
-    </button>
+    </Button>
   );
 }
-
-export default Button;

@@ -26,33 +26,24 @@ export const modifyDataIfStudentAlreadyApplied = async (post, currentUser, stude
   }
 };
 
-export const checkIfStudentHasAlreadyApplied = async (postsData, currentUser) => {
-  const { data: studentApplications, error } = await supabase
-    .from('Student_Applications')
-    .select()
-    .match({ student_id: currentUser.uid });
+export const getAppliedJobsOfASpecificStudent = async (currentUser) => {
+  const { data, error } = await supabase.from('Student_Applications').select().match({ student_id: currentUser.uid });
 
-  if (error) return postsData;
+  if (error) return null;
+
+  return data;
+};
+
+export const checkIfStudentHasAlreadyApplied = async (postsData, currentUser) => {
+  const data = await getAppliedJobsOfASpecificStudent(currentUser);
+
+  if (!data) return postsData;
 
   const modifiedData = await Promise.all(
-    postsData.map((post) => modifyDataIfStudentAlreadyApplied(post, currentUser, studentApplications))
+    postsData.map((post) => modifyDataIfStudentAlreadyApplied(post, currentUser, data))
   );
 
   return modifiedData;
-};
-
-export const confirmDeletionDialog = (args) => {
-  const { confirm, operation, operationArg, description, title } = args;
-
-  const [arg1, arg2] = operationArg;
-
-  confirm({ description, title })
-    .then(() => {
-      operation({ arg1, arg2 });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 };
 
 export async function deleteApplicant([studentId, postId, setConfirmDialog]) {

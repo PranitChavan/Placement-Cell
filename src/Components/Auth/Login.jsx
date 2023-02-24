@@ -4,6 +4,7 @@ import { supabase } from '../../Config/supabase.client';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { app } from '../../Config/firebaseCfg';
 import { useAuth } from '../../Context/AuthContext';
+import StandardButton from '../UI/Button';
 
 const googleProvider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -40,10 +41,8 @@ export default function Login() {
   }
 
   return (
-    <form className="login-form">
-      <button type="button" disabled={loading} className={`btn btn-outline-success`} onClick={signInWithGoogleAndSaveData}>
-        Sign in with google
-      </button>
-    </form>
+    <StandardButton disabled={loading} operation={signInWithGoogleAndSaveData}>
+      Login
+    </StandardButton>
   );
 }

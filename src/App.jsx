@@ -2,16 +2,22 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './Context/AuthContext';
 import { useAuth } from './Context/AuthContext';
-import Dashboard from './Components/Pages/Dashboard';
-import Navbar from './Components/Pages/Navbar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 import Landing from './Components/Pages/Landing';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from './Components/UI/Navigation/Navbar';
+import { DrawerProvider } from './Context/DrawerContext';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const StudentDetails = lazy(() => import('./Components/Pages/StudentDetails'));
 const Applicants = lazy(() => import('./Components/Pages/Applicants'));
+const Drawer = lazy(() => import('./Components/UI/Navigation/Drawer'));
+const FormDialog = lazy(() => import('./Components/Form/TeacherForm'));
+const Dashboard = lazy(() => import('./Components/Pages/Dashboard'));
+const PlacedStudents = lazy(() => import('./Components/Pages/PlacedStudents'));
+const Placed = lazy(() => import('./Components/Pages/Placed'));
 
 const queryClient = new QueryClient();
 
@@ -41,7 +47,14 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <QueryClientProvider client={queryClient}>
           <Router>
-            <Navbar loggedInOrNot={currentUser} />
+            <DrawerProvider>
+              <Navbar currentUser={currentUser} />
+              <Suspense fallback={<h1>Loading...</h1>}>
+                {currentUser && <Drawer currentUser={currentUser} />}
+                {currentUser && <FormDialog />}
+              </Suspense>
+            </DrawerProvider>
+
             <Routes>
               <Route
                 exact
@@ -64,7 +77,9 @@ function App() {
                 path="/StudentDetails"
                 element={
                   <RequiredAuth>
-                    <StudentDetails />
+                    <Suspense>
+                      <StudentDetails />
+                    </Suspense>
                   </RequiredAuth>
                 }
               ></Route>
@@ -88,8 +103,29 @@ function App() {
                   </RequiredAuth>
                 }
               ></Route>
+              <Route
+                path="/PlacedForm"
+                element={
+                  <RequiredAuth>
+                    <Suspense>
+                      <Placed />
+                    </Suspense>
+                  </RequiredAuth>
+                }
+              ></Route>
+              <Route
+                path="/PlacedStudents"
+                element={
+                  <RequiredAuth>
+                    <Suspense>
+                      <PlacedStudents />
+                    </Suspense>
+                  </RequiredAuth>
+                }
+              ></Route>
             </Routes>
           </Router>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
     </AuthProvider>

@@ -7,13 +7,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { deleteApplicant } from '../../Utils/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Confirmation from './ConfirmationDialog';
 import { useAuth } from '../../Context/AuthContext';
+import StandardButton from './Button';
 
 export default function ApplicantsTable(props) {
   const { data, postId } = props;
@@ -77,7 +77,7 @@ export default function ApplicantsTable(props) {
                 </TableCell>
                 <TableCell align="center">
                   {' '}
-                  <Button
+                  {/* <Button
                     color="error"
                     variant="contained"
                     style={{ fontWeight: '5' }}
@@ -95,7 +95,24 @@ export default function ApplicantsTable(props) {
                     }}
                   >
                     Delete
-                  </Button>
+                  </Button> */}
+                  <StandardButton
+                    color={'error'}
+                    operation={() => {
+                      setConfirmDialog({
+                        isOpen: true,
+                        title: 'Delete Student Application',
+                        subTitle: `Are you sure that you would like to delete ${
+                          row.name?.split(' ')[0]
+                        }'s application ? They will need to apply again.`,
+                        onConfirm: () => {
+                          deleteJobApplication([row.student_id, postId]);
+                        },
+                      });
+                    }}
+                  >
+                    Delete
+                  </StandardButton>
                 </TableCell>
               </TableRow>
             ))}

@@ -50,7 +50,6 @@ export default function Post() {
     queryKey: ['jobPosts'],
     queryFn: () => fetchData(currentUser, accountType),
     refetchOnWindowFocus: false,
-    enabled: Boolean(accountType),
   });
 
   const { mutate: deletePost } = useMutation({
@@ -108,8 +107,8 @@ export default function Post() {
   const renderPosts = (data) => {
     return (
       <Container>
-        <Grid container spacing={4} justifyItems="center" style={{ marginTop: '10px' }}>
-          {data.map((post) => {
+        <Grid container spacing={4} justifyItems="center" style={{ marginTop: '50px' }}>
+          {data?.map((post) => {
             const {
               post_id,
               job_title,

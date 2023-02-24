@@ -4,7 +4,7 @@ export default function Slides() {
   return (
     <>
       <div className="container-fluid mt-3" style={{ height: '100%' }}>
-        <h1 style={{ marginBottom: '70px', marginTop: '250px', color: 'white' }}>Hiring Companies!</h1>
+        <h1 style={{ marginBottom: '70px', marginTop: '250px', color: 'white', textAlign: 'center' }}>Hiring Companies!</h1>
         <div
           id="carouselExampleIndicators"
           className="carousel slide pointer-event col-lg-12 border border-dark"

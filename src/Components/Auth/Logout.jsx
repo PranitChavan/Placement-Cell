@@ -1,6 +1,7 @@
 import React from 'react';
 import { app } from '../../Config/firebaseCfg';
 import { getAuth, signOut } from 'firebase/auth';
+import StandardButton from '../UI/Button';
 
 const auth = getAuth(app);
 
@@ -14,10 +15,8 @@ export default function Logout() {
   }
 
   return (
-    <form className="d-flex logout-form">
-      <button className="btn btn-outline-danger fw-bold" type="button" onClick={logoutHandler}>
-        Logout
-      </button>
-    </form>
+    <StandardButton color={'error'} operation={() => logoutHandler()}>
+      Sign out
+    </StandardButton>
   );
 }

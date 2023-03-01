@@ -1,21 +1,18 @@
-import { useState, lazy, Suspense } from 'react';
-import { useAuth } from '../../Context/AuthContext';
-
+import { lazy, Suspense } from 'react';
 import Post from '../UI/Post/Post';
-
 import './Dashboard.css';
 
 const FormModal = lazy(() => import('../Form/FormModal'));
+const Confirmation = lazy(() => import('../UI/ConfirmationDialog'));
 
 export default function Dashboard() {
-  const { currentUser, modalShow, setModalShow } = useAuth();
-
   return (
     <>
       <div className="container">
         <Post />
         <Suspense>
-          <FormModal show={modalShow} onHide={() => setModalShow(false)} />
+          <FormModal />
+          <Confirmation />
         </Suspense>
       </div>
     </>

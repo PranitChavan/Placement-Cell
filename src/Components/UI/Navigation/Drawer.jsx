@@ -7,7 +7,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AddIcon from '@mui/icons-material/Add';
-import { useDrawer } from '../../../Context/DrawerContext';
 import { Avatar } from '@mui/material';
 import { hasStudentFilledTheForm } from '../../../Utils/helpers';
 import { useQuery } from '@tanstack/react-query';
@@ -17,8 +16,9 @@ import { app } from '../../../Config/firebaseCfg';
 import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import CelebrationIcon from '@mui/icons-material/Celebration';
-import { useAuth } from '../../../Context/AuthContext';
+
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import useNavigationStore from '../../../Stores/navigationStore';
 
 const auth = getAuth(app);
 
@@ -32,10 +32,12 @@ async function logoutHandler() {
 
 export default function Drawer({ currentUser }) {
   const [type] = useAccountType(currentUser);
-  const { isDrawerOpen, setIsDrawerOpen, setIsPostFormOpen } = useDrawer();
   const navigate = useNavigate();
   const [accountType] = useAccountType(currentUser);
-  const { setModalShow } = useAuth();
+  const togglePostCreationForm = useNavigationStore((state) => state.togglePostCreationForm);
+
+  const toggleDrawer = useNavigationStore((state) => state.toggleDrawer);
+  const isDrawerOpen = useNavigationStore((state) => state.isDrawerOpen);
 
   const { displayName: fullName } = currentUser || {};
 
@@ -46,20 +48,12 @@ export default function Drawer({ currentUser }) {
     enabled: type === 'Student',
   });
 
-  const toggleDrawer = (open) => (event) => {
-    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-
-    setIsDrawerOpen({ ...isDrawerOpen, left: open });
-  };
-
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
+      onClick={toggleDrawer}
+      onKeyDown={toggleDrawer}
     >
       <List>
         <ListItem disablePadding>
@@ -72,7 +66,7 @@ export default function Drawer({ currentUser }) {
       <Divider color="white" />
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => (type === 'Student' ? navigate('/StudentDetails') : setModalShow(true))}>
+          <ListItemButton onClick={() => (type === 'Student' ? navigate('/StudentDetails') : togglePostCreationForm())}>
             <ListItemIcon>
               <AddIcon />
             </ListItemIcon>
@@ -119,12 +113,7 @@ export default function Drawer({ currentUser }) {
   return (
     <div>
       <>
-        <SwipeableDrawer
-          anchor={'left'}
-          open={isDrawerOpen['left']}
-          onClose={toggleDrawer(false)}
-          onOpen={toggleDrawer(true)}
-        >
+        <SwipeableDrawer anchor={'left'} open={isDrawerOpen} onClose={toggleDrawer} onOpen={toggleDrawer}>
           {list('left')}
         </SwipeableDrawer>
       </>

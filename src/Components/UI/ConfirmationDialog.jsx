@@ -1,35 +1,46 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import useNavigationStore from '../../Stores/navigationStore';
 
-export default function Confirmation(props) {
-  const { confirmDialog, setConfirmDialog } = props;
+export default function Confirmation() {
+  const confirmationDialogState = useNavigationStore((state) => state.confirmationDialogState);
+  const setAndToggleConfirmationDialog = useNavigationStore((state) => state.setAndToggleConfirmationDialog);
+
+  function closeDialog() {
+    setAndToggleConfirmationDialog({ ...confirmationDialogState, isOpen: false });
+  }
 
   return (
-    <div>
+    <>
       <Dialog
         fullWidth
-        open={confirmDialog.isOpen}
+        open={confirmationDialogState.isOpen}
         aria-labelledby="responsive-dialog-title"
-        onClose={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
+        onClose={closeDialog}
       >
-        <DialogTitle id="responsive-dialog-title"> {confirmDialog.title}</DialogTitle>
+        <DialogTitle id="responsive-dialog-title"> {confirmationDialogState.title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>{confirmDialog.subTitle}</DialogContentText>
+          <DialogContentText>{confirmationDialogState.subTitle}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>
+          <Button autoFocus onClick={closeDialog}>
             No
           </Button>
-          <Button onClick={confirmDialog.onConfirm} autoFocus>
+          <Button
+            onClick={() => {
+              confirmationDialogState.onConfirm();
+              closeDialog();
+            }}
+            autoFocus
+          >
             Yes
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }

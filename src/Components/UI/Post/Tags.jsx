@@ -6,7 +6,7 @@ export default function Tags({ items }) {
   const handleClick = () => {};
 
   return (
-    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '-10px' }}>
       {items.map((item, i) => {
         return (
           <Stack direction="row" spacing={1} mt={2} key={i}>

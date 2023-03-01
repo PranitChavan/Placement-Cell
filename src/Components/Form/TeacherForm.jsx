@@ -5,18 +5,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useDrawer } from '../../Context/DrawerContext';
 
 export default function FormDialog() {
-  const { isPostFormOpen, setIsPostFormOpen } = useDrawer();
-
-  const handleClose = () => {
-    setIsPostFormOpen(false);
-  };
+  const handleClose = () => {};
 
   return (
     <div>
-      <Dialog open={isPostFormOpen} onClose={handleClose}>
+      <Dialog open={false} onClose={handleClose}>
         <DialogTitle>Subscribe</DialogTitle>
         <DialogContent>
           <DialogContentText>

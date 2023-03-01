@@ -11,11 +11,11 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { Avatar } from '@mui/material';
-import { useDrawer } from '../../../Context/DrawerContext';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Logo from '../../../Assets/logo.jpg';
 import Login from '../../Auth/Login';
 import Logout from '../../Auth/Logout';
+import useNavigationStore from '../../../Stores/navigationStore';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -64,19 +64,20 @@ export default function Navbar(props) {
   const { currentUser } = props;
   const matches = useMediaQuery('(min-width:900px)');
 
+  const toggleDrawer = useNavigationStore((state) => state.toggleDrawer);
+
   const { displayName: fullName, photoURL: profilePic } = currentUser || {};
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const { setIsDrawerOpen, isDrawerOpen } = useDrawer();
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
+  // const toggleDrawer = (anchor, open) => (event) => {
+  //   if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+  //     return;
+  //   }
 
-    setIsDrawerOpen({ ...isDrawerOpen, [anchor]: open });
-  };
+  //   setIsDrawerOpen({ ...isDrawerOpen, [anchor]: open });
+  // };
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -157,7 +158,7 @@ export default function Navbar(props) {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
-            onClick={toggleDrawer('left', true)}
+            onClick={toggleDrawer}
             disabled={!currentUser}
           >
             <MenuIcon />

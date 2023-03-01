@@ -14,7 +14,6 @@ export default function PlacedForm() {
   const { currentUser } = useAuth();
   const [accountType] = useAccountType(currentUser);
   const [files, setFiles] = React.useState({ offerLetter: null, photo: null });
-
   const navigate = useNavigate();
 
   const { data: postsData, isLoading } = useQuery({
@@ -145,7 +144,7 @@ export default function PlacedForm() {
             margin="normal"
           />
 
-          <Button variant="contained" component="label" fullWidth>
+          <Button variant="contained" component="label" fullWidth style={{ marginTop: '15px' }}>
             Upload offer letter
             <input
               hidden

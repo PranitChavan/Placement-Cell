@@ -1,11 +1,7 @@
 import { supabase } from '../../../Config/supabase.client';
 import { checkIfStudentHasAlreadyApplied } from '../../../Utils/helpers';
 
-export async function deleteJobPost(currentUser, id, setConfirmDialog) {
-  setConfirmDialog({
-    isOpen: false,
-  });
-
+export async function deleteJobPost(currentUser, id) {
   const { data, error } = await supabase
     .from('Job_Posts')
     .update({ deleted_by: currentUser.uid })
@@ -14,7 +10,7 @@ export async function deleteJobPost(currentUser, id, setConfirmDialog) {
 
   if (error) {
     alert('Failed to delete, please try again!');
-    return;
+    throw new Error('Failed!');
   }
 
   await supabase.from('Student_Applications').delete().eq('post_id', id);

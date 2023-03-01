@@ -1,5 +1,5 @@
 import PlacedForm from '../Form/PlacedForm';
-import StandardButton from '../UI/Button';
+import StandardButton from '../UI/Buttons/Button';
 import { useNavigate } from 'react-router-dom';
 
 export default function Placed() {

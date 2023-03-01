@@ -5,23 +5,17 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Context/AuthContext';
+import useNavigationStore from '../../Stores/navigationStore';
 
 const teacherOptions = ['View Applicants', 'Delete'];
 const studentOptions = ['Apply', 'Delete My Application'];
 
 const ITEM_HEIGHT = 48;
 
-export default function MenuItems({
-  deletePost,
-  postId,
-  type,
-  hasStudentApplied,
-  apply,
-  deleteJobApplication,
-  setConfirmDialog,
-}) {
+export default function MenuItems({ deletePost, postId, type, hasStudentApplied, apply, deleteJobApplication }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser } = useAuth();
+  const setAndToggleConfirmationDialog = useNavigationStore((state) => state.setAndToggleConfirmationDialog);
 
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
@@ -36,13 +30,11 @@ export default function MenuItems({
 
     switch (option) {
       case 'Delete': {
-        setConfirmDialog({
+        setAndToggleConfirmationDialog({
           isOpen: true,
           title: 'Delete Job Post',
           subTitle: 'Are you sure that you would like to delete this job post?',
-          onConfirm: () => {
-            deletePost(postId);
-          },
+          onConfirm: () => deletePost(postId),
         });
 
         break;
@@ -54,7 +46,7 @@ export default function MenuItems({
         apply(postId);
         break;
       case 'Delete My Application':
-        setConfirmDialog({
+        setAndToggleConfirmationDialog({
           isOpen: true,
           title: 'Delete Application',
           subTitle: 'Are you sure that you would like to delete your application? You can always apply again.',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { app } from '../../Config/firebaseCfg';
 import { getAuth, signOut } from 'firebase/auth';
-import StandardButton from '../UI/Button';
+import StandardButton from '../UI/Buttons/Button';
 
 const auth = getAuth(app);
 

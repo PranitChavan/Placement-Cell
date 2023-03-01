@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,22 +10,20 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { deleteApplicant } from '../../Utils/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Confirmation from './ConfirmationDialog';
-import { useAuth } from '../../Context/AuthContext';
-import StandardButton from './Button';
+import StandardButton from './Buttons/Button';
+import useNavigationStore from '../../Stores/navigationStore';
 
 export default function ApplicantsTable(props) {
   const { data, postId } = props;
   const queryClient = useQueryClient();
-  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' });
-  const { currentUser } = useAuth();
+  const setAndToggleConfirmationDialog = useNavigationStore((state) => state.setAndToggleConfirmationDialog);
 
   const { mutate: deleteJobApplication } = useMutation({
     mutationFn: ([studentId, postId]) => {
-      return deleteApplicant([studentId, postId, setConfirmDialog]);
+      return deleteApplicant([studentId, postId]);
     },
 
-    onSuccess: (_, [studentId, postId]) => {
+    onSuccess: (_, [studentId]) => {
       queryClient.setQueryData(['applicants'], (oldData) => {
         return oldData.filter((post) => post.student_id !== studentId);
       });
@@ -76,30 +73,10 @@ export default function ApplicantsTable(props) {
                   </a>
                 </TableCell>
                 <TableCell align="center">
-                  {' '}
-                  {/* <Button
-                    color="error"
-                    variant="contained"
-                    style={{ fontWeight: '5' }}
-                    onClick={() => {
-                      setConfirmDialog({
-                        isOpen: true,
-                        title: 'Delete Student Application',
-                        subTitle: `Are you sure that you would like to delete ${
-                          currentUser.displayName.split(' ')[0]
-                        }'s application ? They will need to apply again.`,
-                        onConfirm: () => {
-                          deleteJobApplication([row.student_id, postId]);
-                        },
-                      });
-                    }}
-                  >
-                    Delete
-                  </Button> */}
                   <StandardButton
                     color={'error'}
                     operation={() => {
-                      setConfirmDialog({
+                      setAndToggleConfirmationDialog({
                         isOpen: true,
                         title: 'Delete Student Application',
                         subTitle: `Are you sure that you would like to delete ${
@@ -119,7 +96,6 @@ export default function ApplicantsTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Confirmation confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
     </Container>
   );
 }

@@ -19,11 +19,7 @@ export const modifyDataIfStudentAlreadyApplied = async (post, currentUser, stude
     (application) => application.student_id === currentUser.uid && application.post_id === post.post_id
   );
 
-  if (applicationsForCurrentUser.length > 0) {
-    return { ...post, alreadyApplied: true };
-  } else {
-    return { ...post, alreadyApplied: false };
-  }
+  return { ...post, alreadyApplied: applicationsForCurrentUser.length > 0 };
 };
 
 export const getAppliedJobsOfASpecificStudent = async (currentUser) => {
@@ -46,11 +42,7 @@ export const checkIfStudentHasAlreadyApplied = async (postsData, currentUser) =>
   return modifiedData;
 };
 
-export async function deleteApplicant([studentId, postId, setConfirmDialog]) {
-  setConfirmDialog({
-    isOpen: false,
-  });
-
+export async function deleteApplicant([studentId, postId]) {
   const { data, error } = await supabase
     .from('Student_Applications')
     .delete()
@@ -59,4 +51,11 @@ export async function deleteApplicant([studentId, postId, setConfirmDialog]) {
   if (error) {
     alert('Something went wrong. Please try again!');
   }
+}
+
+export async function accountType(user) {
+  const { data: isTeacher, error } = await supabase.from('Roles').select('id').eq('id', user?.uid);
+
+  if (error) throw new Error('Failed!');
+  return isTeacher?.length > 0 ? 'Teacher' : 'Student';
 }

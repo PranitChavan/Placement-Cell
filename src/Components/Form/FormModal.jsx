@@ -3,12 +3,15 @@ import Modal from 'react-bootstrap/Modal';
 import { useAuth } from '../../Context/AuthContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../../Config/supabase.client';
+import useNavigationStore from '../../Stores/navigationStore';
 
-function FormModal(props) {
-  const { onHide } = props;
+function FormModal() {
   const [formData, setFormData] = useState();
   const { currentUser } = useAuth();
   const queryClient = useQueryClient();
+
+  const togglePostCreationForm = useNavigationStore((state) => state.togglePostCreationForm);
+  const isPostCreationFormOpen = useNavigationStore((state) => state.isPostCreationFormOpen);
 
   const inputHandler = function (e) {
     const id = e.target.id;
@@ -22,7 +25,7 @@ function FormModal(props) {
   const submitHandler = async function (e) {
     e.preventDefault();
     createPost();
-    onHide();
+    togglePostCreationForm();
   };
 
   const { mutate: createPost } = useMutation({
@@ -57,7 +60,13 @@ function FormModal(props) {
   }
 
   return (
-    <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+    <Modal
+      show={isPostCreationFormOpen}
+      onHide={togglePostCreationForm}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">Job Details</Modal.Title>
       </Modal.Header>

@@ -23,10 +23,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteJobPost, fetchData, updatePostsOnUI, updateTagsOnPost } from './services';
 import { applyHandler } from '../../../Utils/applyHandler';
 import { deleteApplicant } from '../../../Utils/helpers';
-import Confirmation from '../ConfirmationDialog';
 import Container from '@mui/material/Container';
-
 import './Post.css';
+import Postbutton from '../Buttons/PostButton';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -44,9 +43,12 @@ export default function Post() {
   const { currentUser } = useAuth();
   const [accountType] = useAccountType(currentUser);
   const queryClient = useQueryClient();
-  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' });
 
-  const { data: postsData, isLoading } = useQuery({
+  const {
+    data: postsData,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ['jobPosts'],
     queryFn: () => fetchData(currentUser, accountType),
     refetchOnWindowFocus: false,
@@ -54,7 +56,7 @@ export default function Post() {
 
   const { mutate: deletePost } = useMutation({
     mutationFn: (postId) => {
-      deleteJobPost(currentUser, postId, setConfirmDialog);
+      deleteJobPost(currentUser, postId);
     },
 
     onSuccess: (_, postId) => {
@@ -78,7 +80,7 @@ export default function Post() {
 
   const { mutate: deleteJobApplication } = useMutation({
     mutationFn: ([studentId, postId]) => {
-      return deleteApplicant([studentId, postId, setConfirmDialog]);
+      return deleteApplicant([studentId, postId]);
     },
 
     onSuccess: (_, [studentId, postId]) => {
@@ -96,7 +98,7 @@ export default function Post() {
     });
   };
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <>
         <CircularColor styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '70vh' }} />
@@ -139,7 +141,6 @@ export default function Post() {
                         hasStudentApplied={alreadyApplied}
                         apply={applyForJob}
                         deleteJobApplication={deleteJobApplication}
-                        setConfirmDialog={setConfirmDialog}
                       />
                     }
                     titleTypographyProps={{ variant: 'h5', fontSize: '22px', marginTop: '5px' }}
@@ -158,7 +159,7 @@ export default function Post() {
           />
         } */}
                   <CardContent>
-                    <Stack direction="row" alignItems="center" justifyContent="start" gap={1} mt={-3}>
+                    <Stack direction="row" alignItems="center" justifyContent="start" gap={1} mt={-3.5}>
                       <LocationOnIcon />
                       <Typography color="text.secondary" variant="h6">
                         {location}
@@ -167,10 +168,10 @@ export default function Post() {
 
                     <Tags items={skills_required.split(',')} />
 
-                    <Typography variant="body2" mt={2}>
+                    <Typography variant="body2" mt={1.5}>
                       {description}
                     </Typography>
-                    <Stack direction="row" alignItems="center" gap={1} mt={2}>
+                    <Stack direction="row" alignItems="center" gap={1} mt={1}>
                       <AccessTimeIcon style={{ fontSize: '18px' }} />
                       <Typography style={{ fontSize: '13px' }} color="text.secondary">
                         {created_at
@@ -179,7 +180,7 @@ export default function Post() {
                       </Typography>
                     </Stack>
 
-                    {accountType !== 'Teacher' && alreadyApplied ? (
+                    {accountType !== 'Teacher' && alreadyApplied && (
                       <Chip
                         label="Already Applied"
                         color="success"
@@ -187,9 +188,9 @@ export default function Post() {
                         size="medium"
                         variant="outlined"
                       />
-                    ) : (
-                      ''
                     )}
+
+                    {/* <Postbutton /> */}
                   </CardContent>
 
                   <CardActions disableSpacing>
@@ -230,8 +231,6 @@ export default function Post() {
               </Grid>
             );
           })}
-
-          <Confirmation confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
         </Grid>
       </Container>
     );

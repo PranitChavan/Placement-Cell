@@ -8,7 +8,7 @@ import { lazy, Suspense } from 'react';
 import Landing from './Components/Pages/Landing';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Components/UI/Navigation/Navbar';
-import { DrawerProvider } from './Context/DrawerContext';
+
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const StudentDetails = lazy(() => import('./Components/Pages/StudentDetails'));
@@ -47,13 +47,11 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <QueryClientProvider client={queryClient}>
           <Router>
-            <DrawerProvider>
-              <Navbar currentUser={currentUser} />
-              <Suspense fallback={<h1>Loading...</h1>}>
-                {currentUser && <Drawer currentUser={currentUser} />}
-                {currentUser && <FormDialog />}
-              </Suspense>
-            </DrawerProvider>
+            <Navbar currentUser={currentUser} />
+            <Suspense fallback={<h1>Loading...</h1>}>
+              {currentUser && <Drawer currentUser={currentUser} />}
+              {currentUser && <FormDialog />}
+            </Suspense>
 
             <Routes>
               <Route
@@ -125,7 +123,7 @@ function App() {
               ></Route>
             </Routes>
           </Router>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
       </ThemeProvider>
     </AuthProvider>

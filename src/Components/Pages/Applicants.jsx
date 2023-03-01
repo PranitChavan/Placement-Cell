@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import ApplicantsTable from '../UI/Table';
 import CircularColor from '../UI/Progress';
 import { useQuery } from '@tanstack/react-query';
-import StandardButton from '../UI/Button';
+import StandardButton from '../UI/Buttons/Button';
 import './Applicants.css';
+import Confirmation from '../UI/ConfirmationDialog';
 
 export default function Applicants() {
   const location = useLocation();
@@ -54,6 +55,8 @@ export default function Applicants() {
       <div className="header container">
         <StandardButton operation={() => navigate('/Dashboard')}>Go Back</StandardButton>
       </div>
+
+      <Confirmation />
     </>
   );
 }

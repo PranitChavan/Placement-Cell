@@ -44,7 +44,10 @@ export default function Login() {
         .from('Students')
         .insert({ student_id: user.uid, name: user.displayName, email: user.email, profile_picture: user.photoURL });
 
-      if (error) alert('Failed to create user! Please logout and login again before performing any actions.');
+      console.log(error);
+
+      if (error && error.code !== '23505')
+        alert('Failed to create user! Please logout and login again before performing any actions.');
     }
   }
 

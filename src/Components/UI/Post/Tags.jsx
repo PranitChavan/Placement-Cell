@@ -9,7 +9,7 @@ export default function Tags({ items }) {
     <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '-10px' }}>
       {items.map((item, i) => {
         return (
-          <Stack direction="row" spacing={1} mt={2} key={i}>
+          <Stack direction="row" spacing={1} mt={2.5} key={i}>
             <Chip label={item} onClick={handleClick} />
           </Stack>
         );

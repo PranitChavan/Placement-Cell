@@ -1,14 +1,16 @@
 import { useLocation } from 'react-router-dom';
 import { fetchApplicantsData } from '../../Utils/fetchApplicantsData';
 import { getJobDetails } from '../../Utils/helpers';
-import { exportExcel } from '../../utils/exportExcel';
+
 import { useNavigate } from 'react-router-dom';
 import ApplicantsTable from '../UI/Table';
 import CircularColor from '../UI/Progress';
 import { useQuery } from '@tanstack/react-query';
 import StandardButton from '../UI/Buttons/Button';
 import './Applicants.css';
+import GenericTable from '../UI/Tables/Table';
 import Confirmation from '../UI/ConfirmationDialog';
+import saveFile from '../../Utils/excel';
 
 export default function Applicants() {
   const location = useLocation();
@@ -38,6 +40,22 @@ export default function Applicants() {
     return <CircularColor styles={{ display: 'flex', justifyContent: 'center' }} />;
   }
 
+  const filterData = (data) => {
+    const studentsWithoutId = data.map((student) => {
+      const { student_id, profile_picture, ...studentWithoutId } = student;
+      return studentWithoutId;
+    });
+
+    return studentsWithoutId;
+  };
+
+  const props = {
+    headings: ['Name', 'Email', 'Resume', 'Actions'],
+    data: applicantsData,
+    isLoading: isLoadingApplicants,
+    marginTop: 0,
+  };
+
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'column' }} className="idk container">
@@ -45,17 +63,18 @@ export default function Applicants() {
           {companyData[0].company_name}
         </h1>
 
-        <StandardButton operation={() => exportExcel(applicantsData, companyData[0].company_name)}>
+        <StandardButton
+          operation={() => saveFile(`${companyData[0].company_name}.csv`, filterData(applicantsData), 'text/csv', false)}
+        >
           Export to Excel
         </StandardButton>
       </div>
+      {<ApplicantsTable data={applicantsData} postId={postId} />}
 
-      <ApplicantsTable data={applicantsData} postId={postId} />
-
-      <div className="header container">
+      {/* <GenericTable props={props} /> */}
+      <div className="header container" style={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
         <StandardButton operation={() => navigate('/Dashboard')}>Go Back</StandardButton>
       </div>
-
       <Confirmation />
     </>
   );

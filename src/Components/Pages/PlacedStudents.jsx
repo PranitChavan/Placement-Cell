@@ -1,6 +1,7 @@
 import PlacedTable from '../UI/PlacedTable';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../../Config/supabase.client';
+import GenericTable from '../UI/Tables/Table';
 
 async function getData() {
   let { data, error } = await supabase.rpc('get_placed_students');
@@ -17,9 +18,17 @@ export default function PlacedStudents() {
     refetchOnWindowFocus: false,
   });
 
+  const props = {
+    headings: ['Name', 'Company Name', 'Package', 'Phone', 'Offer Letter', 'Photo'],
+    data,
+    isLoading,
+    marginTop: 200,
+  };
+
   return (
     <>
       <PlacedTable data={data} isLoading={isLoading} />
+      {/* <GenericTable props={props} /> */}
     </>
   );
 }

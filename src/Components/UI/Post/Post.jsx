@@ -139,7 +139,6 @@ export default function Post() {
                         postId={post_id}
                         type={accountType}
                         hasStudentApplied={alreadyApplied}
-                        apply={applyForJob}
                         deleteJobApplication={deleteJobApplication}
                       />
                     }
@@ -180,7 +179,7 @@ export default function Post() {
                       </Typography>
                     </Stack>
 
-                    {accountType !== 'Teacher' && alreadyApplied && (
+                    {/* {accountType !== 'Teacher' && alreadyApplied && (
                       <Chip
                         label="Already Applied"
                         color="success"
@@ -188,9 +187,9 @@ export default function Post() {
                         size="medium"
                         variant="outlined"
                       />
-                    )}
+                    )} */}
 
-                    {/* <Postbutton /> */}
+                    <Postbutton state={{ accountType, alreadyApplied, operation: applyForJob, post_id }} />
                   </CardContent>
 
                   <CardActions disableSpacing>

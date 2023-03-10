@@ -3,21 +3,20 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useNavigate } from 'react-router-dom';
+
 import { useAuth } from '../../Context/AuthContext';
 import useNavigationStore from '../../Stores/navigationStore';
 
-const teacherOptions = ['View Applicants', 'Delete'];
-const studentOptions = ['Apply', 'Delete My Application'];
+const teacherOptions = ['Delete Post'];
+const studentOptions = ['Delete My Application'];
 
 const ITEM_HEIGHT = 48;
 
-export default function MenuItems({ deletePost, postId, type, hasStudentApplied, apply, deleteJobApplication }) {
+export default function MenuItems({ deletePost, postId, type, hasStudentApplied, deleteJobApplication }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser } = useAuth();
   const setAndToggleConfirmationDialog = useNavigationStore((state) => state.setAndToggleConfirmationDialog);
 
-  const navigate = useNavigate();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -29,7 +28,7 @@ export default function MenuItems({ deletePost, postId, type, hasStudentApplied,
     setAnchorEl(null);
 
     switch (option) {
-      case 'Delete': {
+      case 'Delete Post': {
         setAndToggleConfirmationDialog({
           isOpen: true,
           title: 'Delete Job Post',
@@ -39,12 +38,7 @@ export default function MenuItems({ deletePost, postId, type, hasStudentApplied,
 
         break;
       }
-      case 'View Applicants':
-        navigate(`/Applicants/${postId}`, { state: { postId } });
-        break;
-      case 'Apply':
-        apply(postId);
-        break;
+
       case 'Delete My Application':
         setAndToggleConfirmationDialog({
           isOpen: true,

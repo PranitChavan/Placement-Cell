@@ -3,12 +3,12 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Context/AuthContext';
 import useNavigationStore from '../../Stores/navigationStore';
 
 const teacherOptions = ['Delete Post'];
-const studentOptions = ['Delete My Application'];
+const studentOptions = ['Delete My Application', 'Update Status'];
 
 const ITEM_HEIGHT = 48;
 
@@ -16,6 +16,7 @@ export default function MenuItems({ deletePost, postId, type, hasStudentApplied,
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser } = useAuth();
   const setAndToggleConfirmationDialog = useNavigationStore((state) => state.setAndToggleConfirmationDialog);
+  const navigate = useNavigate();
 
   const open = Boolean(anchorEl);
 
@@ -50,6 +51,9 @@ export default function MenuItems({ deletePost, postId, type, hasStudentApplied,
         });
 
         break;
+
+      case 'Update Status':
+        navigate(`/jobstatus/${postId}/${currentUser.uid}`, { state: { postId } });
       default:
         break;
     }
@@ -61,7 +65,7 @@ export default function MenuItems({ deletePost, postId, type, hasStudentApplied,
 
   const disableMenuItems = (option) => {
     if (option === 'Apply' && hasStudentApplied) return true;
-    if (option === 'Delete My Application' && !hasStudentApplied) return true;
+    if ((option === 'Delete My Application' || option === 'Update Status') && !hasStudentApplied) return true;
 
     return false;
   };

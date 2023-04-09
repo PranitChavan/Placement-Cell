@@ -6,10 +6,10 @@ export default function StandardButton({ operation, children, color, disabled, s
       variant="contained"
       disabled={disabled}
       onClick={operation}
-      color="error"
-      style={{ background: !color ? '#2ea44f' : '', ...style }}
+      color={color}
+      style={{ background: !color ? '#2ea44f' : '', ...style, textTransform: 'capitalize' }}
     >
-      {children}
+      <span style={{ whiteSpace: 'nowrap' }}>{children}</span>
     </Button>
   );
 }

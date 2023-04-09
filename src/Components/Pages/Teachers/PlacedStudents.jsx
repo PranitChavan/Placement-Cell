@@ -1,7 +1,7 @@
-import PlacedTable from '../UI/PlacedTable';
+import PlacedTable from '../../UI/Tables/PlacedTable';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '../../Config/supabase.client';
-import GenericTable from '../UI/Tables/Table';
+import { supabase } from '../../../Config/supabase.client';
+import GenericTable from '../../UI/Tables/Table';
 
 async function getData() {
   let { data, error } = await supabase.rpc('get_placed_students');

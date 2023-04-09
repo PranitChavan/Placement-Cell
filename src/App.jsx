@@ -8,16 +8,19 @@ import { lazy, Suspense } from 'react';
 import Landing from './Components/Pages/Landing';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Components/UI/Navigation/Navbar';
+import Students from './Components/Pages/Teachers/Students';
+import AppliedJobs from './Components/Pages/Teachers/AppliedJobs';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-const StudentDetails = lazy(() => import('./Components/Pages/StudentDetails'));
-const Applicants = lazy(() => import('./Components/Pages/Applicants'));
+const StudentDetails = lazy(() => import('./Components/Form/StudentDetails'));
+const Applicants = lazy(() => import('./Components/Pages/Teachers/Applicants'));
 const Drawer = lazy(() => import('./Components/UI/Navigation/Drawer'));
 const FormDialog = lazy(() => import('./Components/Form/TeacherForm'));
 const Dashboard = lazy(() => import('./Components/Pages/Dashboard'));
-const PlacedStudents = lazy(() => import('./Components/Pages/PlacedStudents'));
-const Placed = lazy(() => import('./Components/Pages/Placed'));
+const PlacedStudents = lazy(() => import('./Components/Pages/Teachers/PlacedStudents'));
+const Placed = lazy(() => import('./Components/Pages/Students/Placed'));
+const JobStatus = lazy(() => import('./Components/Pages/Students/JobStatus'));
 
 const queryClient = new QueryClient();
 
@@ -117,6 +120,37 @@ function App() {
                   <RequiredAuth>
                     <Suspense>
                       <PlacedStudents />
+                    </Suspense>
+                  </RequiredAuth>
+                }
+              ></Route>
+              <Route
+                path={`/jobstatus/:postId/:studentId`}
+                element={
+                  <RequiredAuth>
+                    <Suspense>
+                      <JobStatus />
+                    </Suspense>
+                  </RequiredAuth>
+                }
+              ></Route>
+              <Route
+                path="/students"
+                element={
+                  <RequiredAuth>
+                    <Suspense>
+                      <Students />
+                    </Suspense>
+                  </RequiredAuth>
+                }
+              ></Route>
+              <Route
+                path="/students/jobsApplied/:studentId"
+                exact
+                element={
+                  <RequiredAuth>
+                    <Suspense>
+                      <AppliedJobs />
                     </Suspense>
                   </RequiredAuth>
                 }

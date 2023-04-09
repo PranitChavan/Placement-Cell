@@ -16,6 +16,7 @@ import { app } from '../../../Config/firebaseCfg';
 import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import CelebrationIcon from '@mui/icons-material/Celebration';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import useNavigationStore from '../../../Stores/navigationStore';
@@ -94,6 +95,28 @@ export default function Drawer({ currentUser }) {
                 <RemoveRedEyeIcon />
               </ListItemIcon>
               <ListItemText primary={'View Placed Students'} />
+            </ListItemButton>
+          </ListItem>
+        )}
+
+        {accountType === 'Teacher' && (
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/Students')}>
+              <ListItemIcon>
+                <SupervisedUserCircleIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Students'} />
+            </ListItemButton>
+          </ListItem>
+        )}
+
+        {accountType === 'Student' && (
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/Students')}>
+              <ListItemIcon>
+                <RemoveRedEyeIcon />
+              </ListItemIcon>
+              <ListItemText primary={'View Applied Jobs'} />
             </ListItemButton>
           </ListItem>
         )}

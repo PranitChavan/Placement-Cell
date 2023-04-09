@@ -17,7 +17,6 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useAuth } from '../../../Context/AuthContext/';
 import { useAccountType } from '../../../Hooks/useAccountType';
 import timeAgo from '../../../Utils/displayTimeSincePostCreated';
-import Chip from '@mui/material/Chip';
 import CircularColor from '../Progress';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteJobPost, fetchData, updatePostsOnUI, updateTagsOnPost } from './services';

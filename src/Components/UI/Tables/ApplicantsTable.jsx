@@ -8,10 +8,10 @@ import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-import { deleteApplicant } from '../../Utils/helpers';
+import { deleteApplicant } from '../../../Utils/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import StandardButton from './Buttons/Button';
-import useNavigationStore from '../../Stores/navigationStore';
+import StandardButton from '../Buttons/Button';
+import useNavigationStore from '../../../Stores/navigationStore';
 
 export default function ApplicantsTable(props) {
   const { data, postId } = props;

@@ -1,16 +1,15 @@
 import { useLocation } from 'react-router-dom';
-import { fetchApplicantsData } from '../../Utils/fetchApplicantsData';
-import { getJobDetails } from '../../Utils/helpers';
+import { fetchApplicantsData } from '../../../Utils/fetchApplicantsData';
+import { getJobDetails } from '../../../Utils/helpers';
 
 import { useNavigate } from 'react-router-dom';
-import ApplicantsTable from '../UI/Table';
-import CircularColor from '../UI/Progress';
+import ApplicantsTable from '../../UI/Tables/ApplicantsTable';
+import CircularColor from '../../UI/Progress';
 import { useQuery } from '@tanstack/react-query';
-import StandardButton from '../UI/Buttons/Button';
+import StandardButton from '../../UI/Buttons/Button';
 import './Applicants.css';
-import GenericTable from '../UI/Tables/Table';
-import Confirmation from '../UI/ConfirmationDialog';
-import saveFile from '../../Utils/excel';
+import Confirmation from '../../UI/ConfirmationDialog';
+import saveFile from '../../../Utils/excel';
 
 export default function Applicants() {
   const location = useLocation();

@@ -9,8 +9,8 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
-import StandardButton from './Buttons/Button';
-import CircularColor from './Progress';
+import StandardButton from '../Buttons/Button';
+import CircularColor from '../Progress';
 
 export default function PlacedTable(props) {
   const { data, isLoading } = props;

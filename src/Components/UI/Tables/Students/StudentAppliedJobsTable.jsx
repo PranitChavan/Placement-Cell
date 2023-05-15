@@ -8,27 +8,32 @@ import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-import { deleteApplicant } from '../../../Utils/helpers';
+import { deleteApplicant } from '../../../../Utils/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import StandardButton from '../Buttons/Button';
-import useNavigationStore from '../../../Stores/navigationStore';
+import StandardButton from '../../Buttons/Button';
+import useNavigationStore from '../../../../Stores/navigationStore';
+import Confirmation from '../../ConfirmationDialog';
+import timeAgo from '../../../../Utils/displayTimeSincePostCreated';
+import { useNavigate } from 'react-router-dom';
 
-export default function ApplicantsTable(props) {
+export default function StudentAppliedJobsTable(props) {
   const { data, postId } = props;
-  const queryClient = useQueryClient();
-  const setAndToggleConfirmationDialog = useNavigationStore((state) => state.setAndToggleConfirmationDialog);
 
-  const { mutate: deleteJobApplication } = useMutation({
-    mutationFn: ([studentId, postId]) => {
-      return deleteApplicant([studentId, postId]);
-    },
+  const navigate = useNavigate();
 
-    onSuccess: (_, [studentId]) => {
-      queryClient.setQueryData(['applicants'], (oldData) => {
-        return oldData.filter((post) => post.student_id !== studentId);
-      });
-    },
-  });
+  //  const setAndToggleConfirmationDialog = useNavigationStore((state) => state.setAndToggleConfirmationDialog);
+
+  // const { mutate: deleteJobApplication } = useMutation({
+  //   mutationFn: ([studentId, postId]) => {
+  //     return deleteApplicant([studentId, postId]);
+  //   },
+
+  //   onSuccess: (_, [studentId]) => {
+  //     queryClient.setQueryData(['applicants'], (oldData) => {
+  //       return oldData.filter((post) => post.student_id !== studentId);
+  //     });
+  //   },
+  // });
 
   return (
     <Container>
@@ -36,17 +41,18 @@ export default function ApplicantsTable(props) {
         <Table sx={{ minWidth: 650, background: '#383838' }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Name</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Resume&nbsp;</TableCell>
-              <TableCell align="center">Actions&nbsp;</TableCell>
+              <TableCell align="center">Company Name</TableCell>
+              <TableCell align="center">Applied on</TableCell>
+              <TableCell align="center">Last status updated on</TableCell>
+              <TableCell align="center">Update Job Status</TableCell>
+              {/* <TableCell align="center">Delete Application</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.length === 0 && (
+            {data?.length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} style={{ textAlign: 'center' }}>
-                  No Students have applied yet!
+                  You have not applied for any jobs yet!
                 </TableCell>
               </TableRow>
             )}
@@ -54,25 +60,26 @@ export default function ApplicantsTable(props) {
             {data.map((row, i) => (
               <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row" align="center">
-                  <Stack direction="row" display="flex" alignItems="center">
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={row.profile_picture}
-                      referrerPolicy="noopener noreferrer"
-                      style={{ marginRight: '10px' }}
-                    >
-                      {row.name?.split('')[0]}
-                    </Avatar>
-                    {row.name}
-                  </Stack>
-                </TableCell>
-                <TableCell align="center">{row.email}</TableCell>
-                <TableCell align="center">
-                  <a href={row.resume_url} rel="noopener noreferrer" target="_blank" style={{ color: 'white' }}>
-                    View
-                  </a>
+                  {row.company_name}
                 </TableCell>
                 <TableCell align="center">
+                  {new Date(row.created_at).toLocaleDateString('en-GB').replace('GMT', '')}
+                </TableCell>
+
+                <TableCell align="center">
+                  {row.status_created_at ? timeAgo(row.status_created_at) : 'Not Updated yet'}
+                </TableCell>
+                <TableCell align="center">
+                  <StandardButton
+                    color={'success'}
+                    operation={() => {
+                      navigate(`/jobstatus/${row.post_id}/${row.student_id}`);
+                    }}
+                  >
+                    Update Status
+                  </StandardButton>
+                </TableCell>
+                {/* <TableCell align="center">
                   <StandardButton
                     color={'error'}
                     operation={() => {
@@ -90,12 +97,13 @@ export default function ApplicantsTable(props) {
                   >
                     Delete
                   </StandardButton>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <Confirmation />
     </Container>
   );
 }

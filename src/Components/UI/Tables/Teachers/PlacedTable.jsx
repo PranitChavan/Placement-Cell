@@ -9,31 +9,30 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
-import StandardButton from '../Buttons/Button';
-// import CircularColor from './Progress';
+import StandardButton from '../../Buttons/Button';
+import CircularColor from '../../Progress';
 
-export default function GenericTable({ props }) {
-  const { data, isLoading, headings, marginTop } = props;
+export default function PlacedTable(props) {
+  const { data, isLoading } = props;
 
   const navigate = useNavigate();
 
-  console.log(data);
-
-  // if (isLoading) {
-  //   return <CircularColor styles={{ display: 'flex', justifyContent: 'center' }} />;
-  // }
+  if (isLoading) {
+    return <CircularColor styles={{ display: 'flex', justifyContent: 'center' }} />;
+  }
 
   return (
     <Container>
-      <TableContainer component={Paper} style={{ marginTop }}>
+      <TableContainer component={Paper} style={{ marginTop: '200px' }}>
         <Table sx={{ minWidth: 650, background: '#383838' }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {headings.map((heading, i) => (
-                <TableCell align="center" key={i}>
-                  {heading}
-                </TableCell>
-              ))}
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Company Name</TableCell>
+              <TableCell align="center">Package</TableCell>
+              <TableCell align="center">Phone</TableCell>
+              <TableCell align="center">Offer Letter&nbsp;</TableCell>
+              <TableCell align="center">Photo&nbsp;</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -79,6 +78,10 @@ export default function GenericTable({ props }) {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <div className="header container" style={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
+        <StandardButton operation={() => navigate('/Dashboard')}>Go Back</StandardButton>
+      </div>
     </Container>
   );
 }

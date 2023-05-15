@@ -14,6 +14,10 @@ export async function deleteJobPost(currentUser, id) {
   }
 
   await supabase.from('Student_Applications').delete().eq('post_id', id);
+
+  await supabase.from('Placed_Students').delete().eq('post_id', id);
+
+  await supabase.from('Job_Status').delete().eq('post_id', id);
 }
 
 export async function fetchData(currentUser, accountType) {

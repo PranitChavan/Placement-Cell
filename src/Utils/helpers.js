@@ -50,6 +50,7 @@ export async function deleteApplicant([studentId, postId]) {
 
   if (error) {
     alert('Something went wrong. Please try again!');
+    throw new Error('Failed');
   }
 }
 

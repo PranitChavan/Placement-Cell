@@ -112,7 +112,7 @@ export default function Drawer({ currentUser }) {
 
         {accountType === 'Student' && (
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('/Students')}>
+            <ListItemButton onClick={() => navigate('/appliedjobs')}>
               <ListItemIcon>
                 <RemoveRedEyeIcon />
               </ListItemIcon>

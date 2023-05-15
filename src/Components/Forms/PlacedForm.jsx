@@ -39,7 +39,7 @@ export default function PlacedForm() {
 
     alert('Details are saved! Thank you.');
 
-    navigate(-1);
+    // navigate(-1);
   };
 
   const { mutate: createRecord } = useMutation({
@@ -65,9 +65,20 @@ export default function PlacedForm() {
       .from('placed')
       .getPublicUrl(`${currentUser.uid}/${company}/${currentUser.displayName}photo`);
 
+    const { data: alreadyExist, error: alreadyExistError } = await supabase
+      .from('Placed_Students')
+      .delete()
+      .eq('student_id', currentUser.uid)
+      .eq('job_id', post[0].post_id);
+
+    if (alreadyExistError) {
+      alert('Failed, please try again!');
+      throw new Error('Failed to create post!');
+    }
+
     const { data, error } = await supabase
       .from('Placed_Students')
-      .insert({
+      .upsert({
         id: Date.now().toString(),
         company_name: company,
         package: jobPackage,
@@ -78,7 +89,10 @@ export default function PlacedForm() {
       })
       .select();
 
-    if (error) throw new Error('Failed to create post!');
+    if (error) {
+      alert('Failed! Please try again.');
+      throw new Error('Failed to create post!');
+    }
 
     return data;
   }
@@ -88,7 +102,10 @@ export default function PlacedForm() {
 
     const { data, error } = supabase.storage
       .from('placed')
-      .upload(`${currentUser.uid}/${formData.company}/${currentUser.displayName}offerLetter/`, offerLetter);
+      .upload(`${currentUser.uid}/${formData.company}/${currentUser.displayName}offerLetter`, offerLetter, {
+        upsert: true,
+        cacheControl: 0,
+      });
 
     if (error) {
       alert('Offer Letter and photo not uploaded. Please try again!');
@@ -97,8 +114,10 @@ export default function PlacedForm() {
 
     const { data: ada, error: photoUploadingError } = supabase.storage
       .from('placed')
-      .upload(`${currentUser.uid}/${formData.company}/${currentUser.displayName}photo/`, photo)
-      .select();
+      .upload(`${currentUser.uid}/${formData.company}/${currentUser.displayName}photo`, photo, {
+        upsert: true,
+        cacheControl: 0,
+      });
 
     if (photoUploadingError) alert('Photo not uploaded please try again');
   }

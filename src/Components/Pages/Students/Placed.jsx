@@ -1,4 +1,4 @@
-import PlacedForm from '../../Form/PlacedForm';
+import PlacedForm from '../../Forms/PlacedForm';
 import StandardButton from '../../UI/Buttons/Button';
 import { useNavigate } from 'react-router-dom';
 

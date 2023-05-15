@@ -9,8 +9,8 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
-import StandardButton from '../Buttons/Button';
-import CircularColor from '../Progress';
+import StandardButton from '../../Buttons/Button';
+import CircularColor from '../../Progress';
 
 export default function StudentsTable(props) {
   const { data, searchData } = props;
@@ -49,17 +49,6 @@ export default function StudentsTable(props) {
 
                   {row.name}
                 </TableCell>
-
-                {/* <TableCell align="center">
-                  <StandardButton
-                    color={'success'}
-                    operation={() => {
-                      return null;
-                    }}
-                  >
-                    View Applied Jobs
-                  </StandardButton>
-                </TableCell> */}
 
                 <TableCell align="center">
                   <StandardButton

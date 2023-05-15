@@ -9,9 +9,9 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
-import StandardButton from '../Buttons/Button';
-import CircularColor from '../Progress';
-import timeAgo from '../../../Utils/displayTimeSincePostCreated';
+import StandardButton from '../../Buttons/Button';
+import CircularColor from '../../Progress';
+import timeAgo from '../../../../Utils/displayTimeSincePostCreated';
 import { Typography } from '@mui/material';
 
 export default function AppliedJobsTable(props) {
@@ -37,7 +37,7 @@ export default function AppliedJobsTable(props) {
   return (
     <>
       <TableContainer component={Paper} style={{ marginTop: '100px' }}>
-        <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="Paper" padding={'1.5rem'}>
+        <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle">
           {data.length > 0 ? `Jobs applied by ${data[0]?.name}` : null}
         </Typography>
         <Table sx={{ background: '#383838' }} aria-label="simple table">

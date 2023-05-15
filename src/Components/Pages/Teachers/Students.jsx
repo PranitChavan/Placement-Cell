@@ -1,11 +1,10 @@
-import StudentsTable from '../../UI/Tables/StudentsTable';
+import StudentsTable from '../../UI/Tables/Teachers/StudentsTable';
 import { fetchLimitedStudents } from '../services';
 import { useQuery } from '@tanstack/react-query';
 import { TextField } from '@mui/material';
 import Container from '@mui/material/Container';
 import { useEffect, useState } from 'react';
 import { searchStudents } from '../services';
-import EnhancedTable from '../../UI/Tables/New';
 import CircularColor from '../../UI/Progress';
 
 export default function Students() {

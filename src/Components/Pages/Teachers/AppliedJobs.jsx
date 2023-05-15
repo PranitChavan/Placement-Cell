@@ -1,4 +1,4 @@
-import AppliedJobsTable from '../../UI/Tables/AppliedJobsTable';
+import AppliedJobsTable from '../../UI/Tables/Teachers/AppliedJobsTable';
 import Container from '@mui/material/Container';
 import { fetchJobsAppliedForEachStudent } from '../services';
 import CircularColor from '../../UI/Progress';
@@ -14,7 +14,7 @@ export default function AppliedJobs() {
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: ['initialStudents'],
+    queryKey: ['studentsJobApplicationData'],
     queryFn: () => fetchJobsAppliedForEachStudent(studentId),
     refetchOnWindowFocus: false,
   });

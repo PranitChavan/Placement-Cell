@@ -22,6 +22,7 @@
     "@tanstack/react-query": "^4.24.4",
     "bootstrap": "^5.2.3",
     "firebase": "^9.11.0",
+    "node-fetch": "^3.3.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
@@ -29,5 +30,20 @@
     "top-loader-service": "^0.1.3",
     "web-vitals": "^2.1.4",
     "zustand": "^4.3.3"
-  }
+  },
+  "main": "vite.config.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PranitChavan/Placement-Cell.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PranitChavan/Placement-Cell/issues"
+  },
+  "homepage": "https://github.com/PranitChavan/Placement-Cell#readme",
+  "description": ""
 }

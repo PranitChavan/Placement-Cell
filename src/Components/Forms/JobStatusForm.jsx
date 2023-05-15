@@ -40,6 +40,13 @@ export default function JobStatusForm() {
 
   const navigate = useNavigate();
 
+  const redirectToPlaceForm = () => {
+    alert(
+      'Please fill the details about the offered job. You will be redirected to the page where you can fill those details!'
+    );
+    navigate('/PlacedForm');
+  };
+
   const uploadJobStatus = async () => {
     const {
       jobStatus: job_status = null,
@@ -54,6 +61,7 @@ export default function JobStatusForm() {
     const { data, error } = await supabase.from('Job_Status').upsert(
       {
         id: Date.now().toString(),
+        created_at: new Date(),
         student_id: studentId,
         post_id: postId,
         job_status,
@@ -139,6 +147,11 @@ export default function JobStatusForm() {
 
     if (isError) {
       return alert('Failed to update your data, please try again!');
+    }
+
+    if (formData.jobStatus === 'Offered Job') {
+      redirectToPlaceForm();
+      return;
     }
 
     alert('Your data is updated!');

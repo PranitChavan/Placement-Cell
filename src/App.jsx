@@ -8,19 +8,21 @@ import { lazy, Suspense } from 'react';
 import Landing from './Components/Pages/Landing';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Components/UI/Navigation/Navbar';
-import Students from './Components/Pages/Teachers/Students';
-import AppliedJobs from './Components/Pages/Teachers/AppliedJobs';
+import SearchRoomsDetails from './Test';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-const StudentDetails = lazy(() => import('./Components/Form/StudentDetails'));
+const StudentDetails = lazy(() => import('./Components/Forms/StudentDetails'));
 const Applicants = lazy(() => import('./Components/Pages/Teachers/Applicants'));
 const Drawer = lazy(() => import('./Components/UI/Navigation/Drawer'));
-const FormDialog = lazy(() => import('./Components/Form/TeacherForm'));
+const FormDialog = lazy(() => import('./Components/Forms/TeacherForm'));
 const Dashboard = lazy(() => import('./Components/Pages/Dashboard'));
 const PlacedStudents = lazy(() => import('./Components/Pages/Teachers/PlacedStudents'));
 const Placed = lazy(() => import('./Components/Pages/Students/Placed'));
 const JobStatus = lazy(() => import('./Components/Pages/Students/JobStatus'));
+const Students = lazy(() => import('./Components/Pages/Teachers/Students'));
+const AppliedJobs = lazy(() => import('./Components/Pages/Teachers/AppliedJobs'));
+const StudentAppliedJobs = lazy(() => import('./Components/Pages/Students/StudentAppliedJobs'));
 
 const queryClient = new QueryClient();
 
@@ -47,6 +49,7 @@ function App() {
 
   return (
     <AuthProvider>
+      <SearchRoomsDetails />
       <ThemeProvider theme={darkTheme}>
         <QueryClientProvider client={queryClient}>
           <Router>
@@ -151,6 +154,18 @@ function App() {
                   <RequiredAuth>
                     <Suspense>
                       <AppliedJobs />
+                    </Suspense>
+                  </RequiredAuth>
+                }
+              ></Route>
+
+              <Route
+                path="/appliedjobs"
+                exact
+                element={
+                  <RequiredAuth>
+                    <Suspense>
+                      <StudentAppliedJobs />
                     </Suspense>
                   </RequiredAuth>
                 }

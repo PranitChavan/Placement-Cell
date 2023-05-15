@@ -3,7 +3,7 @@ import { fetchApplicantsData } from '../../../Utils/fetchApplicantsData';
 import { getJobDetails } from '../../../Utils/helpers';
 
 import { useNavigate } from 'react-router-dom';
-import ApplicantsTable from '../../UI/Tables/ApplicantsTable';
+import ApplicantsTable from '../../UI/Tables/Teachers/ApplicantsTable';
 import CircularColor from '../../UI/Progress';
 import { useQuery } from '@tanstack/react-query';
 import StandardButton from '../../UI/Buttons/Button';
@@ -46,13 +46,6 @@ export default function Applicants() {
     });
 
     return studentsWithoutId;
-  };
-
-  const props = {
-    headings: ['Name', 'Email', 'Resume', 'Actions'],
-    data: applicantsData,
-    isLoading: isLoadingApplicants,
-    marginTop: 0,
   };
 
   return (

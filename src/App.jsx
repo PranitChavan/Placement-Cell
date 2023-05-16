@@ -8,7 +8,6 @@ import { lazy, Suspense } from 'react';
 import Landing from './Components/Pages/Landing';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Components/UI/Navigation/Navbar';
-import SearchRoomsDetails from './Test';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -49,7 +48,6 @@ function App() {
 
   return (
     <AuthProvider>
-      <SearchRoomsDetails />
       <ThemeProvider theme={darkTheme}>
         <QueryClientProvider client={queryClient}>
           <Router>

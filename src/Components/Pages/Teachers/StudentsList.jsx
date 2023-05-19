@@ -1,4 +1,4 @@
-import StudentsTable from '../../UI/Tables/Teachers/StudentsTable';
+import StudentsTable from '../../UI/Tables/Teachers/StudentListTable';
 import { fetchLimitedStudents } from '../services';
 import { useQuery } from '@tanstack/react-query';
 import { TextField } from '@mui/material';

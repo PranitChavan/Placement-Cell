@@ -1,4 +1,4 @@
-import AppliedJobsTable from '../../UI/Tables/Teachers/AppliedJobsTable';
+import AppliedJobsTable from '../../UI/Tables/Teachers/AppliedJobsOfASpecificStudentTable';
 import Container from '@mui/material/Container';
 import { fetchJobsAppliedForEachStudent } from '../services';
 import CircularColor from '../../UI/Progress';

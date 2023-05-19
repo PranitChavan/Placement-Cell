@@ -7,14 +7,12 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchData } from '../UI/Post/services';
 import { useAccountType } from '../../Hooks/useAccountType';
 import { Container, TextField, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
 export default function PlacedForm() {
   const [formData, setFormData] = React.useState({});
   const { currentUser } = useAuth();
   const [accountType] = useAccountType(currentUser);
   const [files, setFiles] = React.useState({ offerLetter: null, photo: null });
-  const navigate = useNavigate();
 
   const { data: postsData, isLoading } = useQuery({
     queryKey: ['jobPosts'],

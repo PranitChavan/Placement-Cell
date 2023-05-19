@@ -33,6 +33,7 @@ export default function Login() {
   }
 
   async function createUser(user) {
+    console.log(user);
     if (accountType === 'Teacher') {
       const { error } = await supabase
         .from('Teachers')

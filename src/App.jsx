@@ -14,14 +14,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 const StudentDetails = lazy(() => import('./Components/Forms/StudentDetails'));
 const Applicants = lazy(() => import('./Components/Pages/Teachers/Applicants'));
 const Drawer = lazy(() => import('./Components/UI/Navigation/Drawer'));
-const FormDialog = lazy(() => import('./Components/Forms/TeacherForm'));
 const Dashboard = lazy(() => import('./Components/Pages/Dashboard'));
 const PlacedStudents = lazy(() => import('./Components/Pages/Teachers/PlacedStudents'));
 const Placed = lazy(() => import('./Components/Pages/Students/Placed'));
 const JobStatus = lazy(() => import('./Components/Pages/Students/JobStatus'));
-const Students = lazy(() => import('./Components/Pages/Teachers/Students'));
-const AppliedJobs = lazy(() => import('./Components/Pages/Teachers/AppliedJobs'));
-const StudentAppliedJobs = lazy(() => import('./Components/Pages/Students/StudentAppliedJobs'));
+const Students = lazy(() => import('./Components/Pages/Teachers/StudentsList'));
+const AppliedJobs = lazy(() => import('./Components/Pages/Teachers/AppliedJobsOfASpecificStudent'));
+const StudentAppliedJobs = lazy(() => import('./Components/Pages/Students/AppliedJobs'));
 
 const queryClient = new QueryClient();
 
@@ -52,11 +51,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Router>
             <Navbar currentUser={currentUser} />
-            <Suspense fallback={<h1>Loading...</h1>}>
-              {currentUser && <Drawer currentUser={currentUser} />}
-              {currentUser && <FormDialog />}
-            </Suspense>
-
+            <Suspense fallback={<h1>Loading...</h1>}>{currentUser && <Drawer currentUser={currentUser} />}</Suspense>
             <Routes>
               <Route
                 exact

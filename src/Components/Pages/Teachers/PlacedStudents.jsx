@@ -1,4 +1,4 @@
-import PlacedTable from '../../UI/Tables/Teachers/PlacedTable';
+import PlacedTable from '../../UI/Tables/Teachers/PlacedStudentsTable';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../../../Config/supabase.client';
 

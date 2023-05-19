@@ -67,7 +67,11 @@ export default function Drawer({ currentUser }) {
       <Divider color="white" />
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => (type === 'Student' ? navigate('/StudentDetails') : togglePostCreationForm())}>
+          <ListItemButton
+            onClick={() =>
+              type === 'Student' ? navigate('/StudentDetails') : (togglePostCreationForm(), navigate('/Dashboard'))
+            }
+          >
             <ListItemIcon>
               <AddIcon />
             </ListItemIcon>

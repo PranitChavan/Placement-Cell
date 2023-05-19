@@ -84,7 +84,6 @@ export default function StudentDetails() {
                           id="name"
                           className="form-control mb-2"
                           placeholder="Full Name *"
-                          defaultValue={currentUser.displayName}
                           onChange={inputHandler}
                         />
                       </div>
@@ -125,6 +124,7 @@ export default function StudentDetails() {
                           id="email"
                           defaultValue={currentUser.email}
                           onChange={inputHandler}
+                          disabled
                         />
                       </div>
                       <div className="form-group">

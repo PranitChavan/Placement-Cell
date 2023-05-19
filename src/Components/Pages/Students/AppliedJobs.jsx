@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import Container from '@mui/material/Container';
 import CircularColor from '../../UI/Progress';
-import StudentAppliedJobsTable from '../../UI/Tables/Students/StudentAppliedJobsTable';
+import StudentAppliedJobsTable from '../../UI/Tables/Students/AppliedJobsTable';
 import { fetchJobsAppliedForEachStudent } from '../services';
 import { useAuth } from '../../../Context/AuthContext';
 import StandardButton from '../../UI/Buttons/Button';

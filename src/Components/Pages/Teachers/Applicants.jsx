@@ -63,7 +63,6 @@ export default function Applicants() {
       </div>
       {<ApplicantsTable data={applicantsData} postId={postId} />}
 
-      {/* <GenericTable props={props} /> */}
       <div className="header container" style={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
         <StandardButton operation={() => navigate('/Dashboard')}>Go Back</StandardButton>
       </div>

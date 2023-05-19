@@ -99,29 +99,29 @@ export default function Navbar(props) {
   //   setMobileMoreAnchorEl(event.currentTarget);
   // };
 
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      {/* <MenuItem onClick={handleMenuClose}>Logout</MenuItem> */}
-      <MenuItem onClick={handleMenuClose}>
-        <Logout />
-      </MenuItem>
-    </Menu>
-  );
+  // const menuId = 'primary-search-account-menu';
+  // const renderMenu = (
+  //   <Menu
+  //     anchorEl={anchorEl}
+  //     anchorOrigin={{
+  //       vertical: 'bottom',
+  //       horizontal: 'right',
+  //     }}
+  //     id={menuId}
+  //     keepMounted
+  //     transformOrigin={{
+  //       vertical: 'top',
+  //       horizontal: 'right',
+  //     }}
+  //     open={isMenuOpen}
+  //     onClose={handleMenuClose}
+  //   >
+  //     {/* <MenuItem onClick={handleMenuClose}>Logout</MenuItem> */}
+  //     <MenuItem onClick={handleMenuClose}>
+  //       <Logout />
+  //     </MenuItem>
+  //   </Menu>
+  // );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -163,7 +163,7 @@ export default function Navbar(props) {
           >
             <MenuIcon />
           </IconButton>
-          {/* {matches && <Avatar style={{ marginRight: '10px' }} src={Logo}></Avatar>} */}
+          {matches && <Avatar style={{ marginRight: '10px' }} src={Logo}></Avatar>}
           <Typography
             align={matches ? 'left' : 'center'}
             variant="h6"
@@ -205,7 +205,7 @@ export default function Navbar(props) {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
+      {/* {renderMenu} */}
     </Box>
   );
 }

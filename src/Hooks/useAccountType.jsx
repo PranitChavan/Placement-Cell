@@ -6,7 +6,7 @@ import { accountType as getAccountType } from '../Utils/helpers';
 export function useAccountType(currentUser) {
   const { data: accountType, isLoading } = useQuery({
     queryKey: ['accountType'],
-    queryFn: () => getAccountType(currentUser),
+    queryFn: () => getAccountType(currentUser.uid),
     refetchOnWindowFocus: false,
   });
 

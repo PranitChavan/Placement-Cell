@@ -17,7 +17,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import useNavigationStore from '../../../Stores/navigationStore';
 
@@ -66,6 +66,15 @@ export default function Drawer({ currentUser }) {
       </List>
       <Divider color="white" />
       <List>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate('/profile')}>
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary={'Profile'} />
+          </ListItemButton>
+        </ListItem>
+
         <ListItem disablePadding>
           <ListItemButton
             onClick={() =>

@@ -15,17 +15,21 @@ export async function deleteJobPost(currentUser, id) {
 
   await supabase.from('Student_Applications').delete().eq('post_id', id);
 
-  await supabase.from('Placed_Students').delete().eq('post_id', id);
+  await supabase.from('Placed_Students').delete().eq('job_id', id);
 
   await supabase.from('Job_Status').delete().eq('post_id', id);
 }
 
-export async function fetchData(currentUser, accountType) {
-  let { data, error } = await supabase.rpc('get_job_posts');
+export async function fetchData(currentUser, accountType, departmentData) {
+  const depts = departmentData.map((dept) => dept.department_id);
+
+  let { data, error } = await supabase.rpc('get_job_posts', {
+    department_ids: depts,
+  });
 
   if (error) throw new Error('Failed');
 
-  if (accountType === 'Teacher') return data;
+  if (accountType === 'Teacher') return data; // No need to check if students have already applied if account type is teacher
 
   const postsData = await checkIfStudentHasAlreadyApplied(data, currentUser);
 

@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Components/UI/Navigation/Navbar';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import CircularColor from './Components/UI/Progress';
 
 const StudentDetails = lazy(() => import('./Components/Forms/StudentDetails'));
 const Applicants = lazy(() => import('./Components/Pages/Teachers/Applicants'));
@@ -21,6 +22,7 @@ const JobStatus = lazy(() => import('./Components/Pages/Students/JobStatus'));
 const Students = lazy(() => import('./Components/Pages/Teachers/StudentsList'));
 const AppliedJobs = lazy(() => import('./Components/Pages/Teachers/AppliedJobsOfASpecificStudent'));
 const StudentAppliedJobs = lazy(() => import('./Components/Pages/Students/AppliedJobs'));
+const Profile = lazy(() => import('./Components/Pages/Profile'));
 
 const queryClient = new QueryClient();
 
@@ -51,7 +53,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Router>
             <Navbar currentUser={currentUser} />
-            <Suspense fallback={<h1>Loading...</h1>}>{currentUser && <Drawer currentUser={currentUser} />}</Suspense>
+            <Suspense>{currentUser && <Drawer currentUser={currentUser} />}</Suspense>
             <Routes>
               <Route
                 exact
@@ -84,7 +86,13 @@ function App() {
                 path="/Dashboard"
                 element={
                   <RequiredAuth>
-                    <Suspense>
+                    <Suspense
+                      fallback={
+                        <CircularColor
+                          styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '70vh' }}
+                        />
+                      }
+                    >
                       <Dashboard />
                     </Suspense>
                   </RequiredAuth>
@@ -159,6 +167,17 @@ function App() {
                   <RequiredAuth>
                     <Suspense>
                       <StudentAppliedJobs />
+                    </Suspense>
+                  </RequiredAuth>
+                }
+              ></Route>
+              <Route
+                path="/profile"
+                exact
+                element={
+                  <RequiredAuth>
+                    <Suspense>
+                      <Profile queryClient={queryClient} />
                     </Suspense>
                   </RequiredAuth>
                 }

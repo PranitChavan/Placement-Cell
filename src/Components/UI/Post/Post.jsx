@@ -19,7 +19,7 @@ import { useAccountType } from '../../../Hooks/useAccountType';
 import timeAgo from '../../../Utils/displayTimeSincePostCreated';
 import CircularColor from '../Progress';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteJobPost, fetchData, updatePostsOnUI, updateTagsOnPost } from './services';
+import { deleteJobPost, fetchData, updatePostsOnUI, updateTagsOnPost } from './post-services';
 import { applyHandler } from '../../../Utils/applyHandler';
 import { deleteApplicant } from '../../../Utils/helpers';
 import Container from '@mui/material/Container';
@@ -42,6 +42,7 @@ export default function Post() {
   const { currentUser } = useAuth();
   const [accountType] = useAccountType(currentUser);
   const queryClient = useQueryClient();
+  const departmentData = queryClient.getQueryData(['departmentDetails']);
 
   const {
     data: postsData,
@@ -49,9 +50,30 @@ export default function Post() {
     isFetching,
   } = useQuery({
     queryKey: ['jobPosts'],
-    queryFn: () => fetchData(currentUser, accountType),
+    queryFn: () => fetchData(currentUser, accountType, departmentData),
     refetchOnWindowFocus: false,
+    enabled: departmentData?.length > 0,
   });
+
+  // async function test(departmentData) {
+  //   const dept = departmentData.map((dept) => dept.department_id);
+  //   const { data, error } = await supabase.rpc('get_job_posts_test', {
+  //     department_ids: dept,
+  //   });
+
+  //   // console.log(data);
+
+  //   return data;
+  // }
+
+  // const { data: postsData1 } = useQuery({
+  //   queryKey: ['jobPosts1'],
+  //   queryFn: () => test(departmentData),
+  //   refetchOnWindowFocus: false,
+  //   enabled: departmentData?.length > 0,
+  // });
+
+  // console.log(postsData1);
 
   const { mutate: deletePost } = useMutation({
     mutationFn: (postId) => {

@@ -54,8 +54,10 @@ export async function deleteApplicant([studentId, postId]) {
   }
 }
 
-export async function accountType(user) {
-  const { data: isTeacher, error } = await supabase.from('Roles').select('id').eq('id', user?.uid);
+export async function accountType(uId) {
+  if (!uId) return null;
+
+  const { data: isTeacher, error } = await supabase.from('Roles').select('id').eq('id', uId);
 
   if (error) throw new Error('Failed!');
   return isTeacher?.length > 0 ? 'Teacher' : 'Student';

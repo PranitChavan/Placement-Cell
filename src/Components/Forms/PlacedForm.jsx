@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { supabase } from '../../Config/supabase.client';
 import { useAuth } from '../../Context/AuthContext';
 import { useQuery } from '@tanstack/react-query';
-import { fetchData } from '../UI/Post/services';
+import { fetchData } from '../UI/Post/post-services';
 import { useAccountType } from '../../Hooks/useAccountType';
 import { Container, TextField, Button } from '@mui/material';
 

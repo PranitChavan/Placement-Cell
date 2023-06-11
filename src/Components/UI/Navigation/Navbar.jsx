@@ -14,8 +14,8 @@ import { Avatar } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Logo from '../../../Assets/logo.jpg';
 import Login from '../../Auth/Login';
-import Logout from '../../Auth/Logout';
 import useNavigationStore from '../../../Stores/navigationStore';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -69,7 +69,10 @@ export default function Navbar(props) {
   const { displayName: fullName, photoURL: profilePic } = currentUser || {};
 
   const [anchorEl, setAnchorEl] = useState(null);
+
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+
+  const navigate = useNavigate();
 
   // const toggleDrawer = (anchor, open) => (event) => {
   //   if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -163,12 +166,19 @@ export default function Navbar(props) {
           >
             <MenuIcon />
           </IconButton>
-          {matches && <Avatar style={{ marginRight: '10px' }} src={Logo}></Avatar>}
+          {matches && (
+            <Avatar
+              style={{ marginRight: '10px', cursor: 'pointer' }}
+              src={Logo}
+              onClick={() => navigate('/Dashboard')}
+            ></Avatar>
+          )}
           <Typography
             align={matches ? 'left' : 'center'}
             variant="h6"
             noWrap
             component="p"
+            onClick={() => navigate('/Dashboard')}
             sx={{
               display: {
                 sm: 'block',
@@ -176,6 +186,7 @@ export default function Navbar(props) {
                 fontWeight: 600,
                 flexGrow: matches ? 0 : 1,
                 fontSize: matches ? '20px' : '18px',
+                cursor: 'pointer',
               },
             }}
           >

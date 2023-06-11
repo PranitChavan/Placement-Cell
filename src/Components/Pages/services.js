@@ -27,3 +27,13 @@ export async function fetchJobsAppliedForEachStudent(studentId) {
 
   return data;
 }
+
+export async function fetchDepartmentDetails(teacherId) {
+  let { data, error } = await supabase.rpc('get_department_info_by_teacher', {
+    teacherId,
+  });
+
+  if (error) throw new Error('Failed');
+
+  return data;
+}

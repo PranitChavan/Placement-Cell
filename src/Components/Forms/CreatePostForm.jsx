@@ -2,13 +2,15 @@ import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useAuth } from '../../Context/AuthContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '../../Config/supabase.client';
 import useNavigationStore from '../../Stores/navigationStore';
+import { createPostRecord } from './formServices';
 
-function FormModal() {
+function CreatePost() {
   const [formData, setFormData] = useState();
   const { currentUser } = useAuth();
   const queryClient = useQueryClient();
+
+  const departmentData = queryClient.getQueryData(['departmentDetails']);
 
   const togglePostCreationForm = useNavigationStore((state) => state.togglePostCreationForm);
   const isPostCreationFormOpen = useNavigationStore((state) => state.isPostCreationFormOpen);
@@ -18,18 +20,26 @@ function FormModal() {
     const value = e.target.value;
 
     setFormData((prevData) => {
-      return { ...prevData, [id]: value, teacherId: currentUser.uid, post_id: Date.now().toString() };
+      return {
+        ...prevData,
+        [id]: value,
+        teacherId: currentUser.uid,
+        post_id: Date.now().toString(),
+        department_id: departmentData && departmentData.length > 0 && departmentData[0].department_id,
+      };
     });
   };
 
   const submitHandler = async function (e) {
     e.preventDefault();
-    createPost();
+    createPost([formData, currentUser]);
     togglePostCreationForm();
   };
 
   const { mutate: createPost } = useMutation({
-    mutationFn: createPostRecord,
+    mutationFn: ([formData, currentUser]) => {
+      return createPostRecord([formData, currentUser]);
+    },
 
     onSuccess: () => {
       queryClient.setQueryData(['jobPosts'], (oldData) => {
@@ -37,27 +47,6 @@ function FormModal() {
       });
     },
   });
-
-  async function createPostRecord() {
-    let { description, company_name, job_title, location, skills_required, post_id: id } = formData;
-
-    const { data, error } = await supabase
-      .from('Job_Posts')
-      .insert({
-        post_id: id,
-        teacher_id: currentUser.uid,
-        description,
-        company_name,
-        job_title,
-        location,
-        skills_required,
-      })
-      .select();
-
-    if (error) throw new Error('Failed to create post!');
-
-    return data;
-  }
 
   return (
     <Modal
@@ -117,6 +106,17 @@ function FormModal() {
             </label>
             <textarea className="form-control" id="description" rows="3" required onChange={inputHandler}></textarea>
           </div>
+
+          {/* <div className="mb-3">
+            <label htmlFor="skills_required" className="form-label">
+              Department
+            </label>
+            <select className="form-select" aria-label="Default select example" id="department" onChange={inputHandler}>
+              <option value="BSC">BSC</option>
+              <option value="MSC">MSC</option>
+            </select>
+          </div> */}
+
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
@@ -126,4 +126,4 @@ function FormModal() {
   );
 }
 
-export default FormModal;
+export default CreatePost;

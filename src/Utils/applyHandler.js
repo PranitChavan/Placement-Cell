@@ -31,14 +31,8 @@ async function getPrevAppliedJobs(currentUser) {
       .eq('student_id', currentUser.uid)
       .eq('post_id', d.post_id);
 
-    console.log(data);
-
     jobsWhichStatusAreNotUpdated.push(...data);
   });
-
-  console.log(jobsWhichStatusAreNotUpdated);
-
-  //  console.log(filtered, 'adada');
 }
 
 export async function applyHandler(postId, currentUser) {

@@ -15,6 +15,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unSub = auth.onAuthStateChanged((currUser) => {
+      console.log(currUser);
       setCurrentUser(currUser);
       setLoading(false);
     });
